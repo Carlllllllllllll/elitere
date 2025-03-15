@@ -1,0 +1,38 @@
+{
+    "name": "leaderboard-website",
+    "version": "1.0.0",
+    "description": "A secure leaderboard website with login, MongoDB integration, and Discord webhook logging.",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "keywords": [
+        "leaderboard",
+        "login",
+        "express",
+        "mongodb",
+        "discord",
+        "webhook"
+    ],
+    "author": "Carl",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^1.7.7",
+        "bcrypt": "^5.1.1",
+        "body-parser": "^1.20.2",
+        "connect-mongo": "^5.1.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "exceljs": "^4.4.0",
+        "express": "^4.18.2",
+        "express-session": "^1.18.1",
+        "mongoose": "^7.5.0",
+        "path": "^0.12.7",
+        "request-ip": "^3.3.0",
+        "useragent": "^2.3.0"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.1"
+    }
+}

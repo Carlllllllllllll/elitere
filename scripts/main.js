@@ -575,7 +575,7 @@ document.addEventListener('DOMContentLoaded', () =>
 
 		try
 		{
-			const response = await fetch('https://.elitere.ooguy.com/api/orders',
+			const response = await fetch('https://elitere.ooguy.com/api/orders',
 			{
 				method: 'POST',
 				headers:
@@ -962,7 +962,7 @@ document.addEventListener('DOMContentLoaded', () =>
 
 		try
 		{
-			const response = await fetch('https://.elitere.ooguy.com/api/reports',
+			const response = await fetch('https://elitere.ooguy.com/api/reports',
 			{
 				method: 'POST',
 				headers:
@@ -1099,7 +1099,7 @@ document.addEventListener('DOMContentLoaded', () =>
 
 		try
 		{
-			const response = await fetch('https://.elitere.ooguy.com/api/feedback',
+			const response = await fetch('https://elitere.ooguy.com/api/feedback',
 			{
 				method: 'POST',
 				headers:
@@ -1433,7 +1433,7 @@ document.addEventListener('DOMContentLoaded', () =>
 
 		try
 		{
-			const response = await fetch('https://.elitere.ooguy.com/api/refunds',
+			const response = await fetch('https://elitere.ooguy.com/api/refunds',
 			{
 				method: 'POST',
 				headers:

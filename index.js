@@ -1,36 +1,35 @@
 const express = require('express');
 const path = require('path');
-const PORT = process.env.PORT || 3000;
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const crypto = require('crypto');
 const cors = require('cors');
 const axios = require('axios');
+const mongoose = require('mongoose');
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// CORS Configuration
 const corsOptions = {
-	origin: (origin, callback) =>
-	{
-		const allowedOrigins = ['https://.elitere.ooguy.com'];
-		if(!origin || allowedOrigins.includes(origin))
-		{
-			callback(null, true);
-		}
-		else
-		{
-			callback(new Error('Not allowed by CORS'));
-		}
-	},
-	methods: ['GET', 'POST'],
-	allowedHeaders: ['Content-Type', 'Authorization'],
-	credentials: true,
+    origin: (origin, callback) => {
+        const allowedOrigins = ['https://elitere.ooguy.com'];
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
 };
 
 app.use(cors(corsOptions));
-
-const app = express();
-
-dotenv.config();
-const mongoose = require('mongoose');
+app.use(bodyParser.json());
 
 mongoose.connect(process.env.MONGODB_URI,
 {

@@ -587,6 +587,22 @@ document.addEventListener('DOMContentLoaded', () =>
 
 			const data = await response.json();
 
+						if (response.status === 429) {
+                Swal.fire({
+                    text: 'You are on cooldown. Please try again later.',
+                    icon: 'warning',
+                    confirmButtonText: 'Ok',
+                    background: '#121212',
+                    color: '#ffffff',
+                    confirmButtonColor: '#000000',
+                    customClass: {
+                        popup: 'swal-visible',
+                        confirmButton: 'swal-button'
+                    }
+                });
+                return;
+            }
+
 			if(response.ok)
 			{
 				if(response.ok)
@@ -980,6 +996,22 @@ document.addEventListener('DOMContentLoaded', () =>
 				return;
 			}
 
+						if (response.status === 429) {
+                Swal.fire({
+                    text: 'You are on cooldown. Please try again later.',
+                    icon: 'warning',
+                    confirmButtonText: 'Ok',
+                    background: '#121212',
+                    color: '#ffffff',
+                    confirmButtonColor: '#000000',
+                    customClass: {
+                        popup: 'swal-visible',
+                        confirmButton: 'swal-button'
+                    }
+                });
+                return;
+            }
+
 			if(response.ok)
 			{
 				localStorage.setItem('lastReportTime', now);
@@ -1116,6 +1148,22 @@ document.addEventListener('DOMContentLoaded', () =>
 				alert(data.message);
 				return;
 			}
+
+						if (response.status === 429) {
+                Swal.fire({
+                    text: 'You are on cooldown. Please try again later.',
+                    icon: 'warning',
+                    confirmButtonText: 'Ok',
+                    background: '#121212',
+                    color: '#ffffff',
+                    confirmButtonColor: '#000000',
+                    customClass: {
+                        popup: 'swal-visible',
+                        confirmButton: 'swal-button'
+                    }
+                });
+                return;
+            }
 
 			if(response.ok)
 			{
@@ -1403,6 +1451,23 @@ document.addEventListener('DOMContentLoaded', () =>
 				alert(data.message);
 				return;
 			}
+
+
+			if (response.status === 429) {
+                Swal.fire({
+                    text: 'You are on cooldown. Please try again later.',
+                    icon: 'warning',
+                    confirmButtonText: 'Ok',
+                    background: '#121212',
+                    color: '#ffffff',
+                    confirmButtonColor: '#000000',
+                    customClass: {
+                        popup: 'swal-visible',
+                        confirmButton: 'swal-button'
+                    }
+                });
+                return;
+            }
 
 			if(response.ok)
 			{

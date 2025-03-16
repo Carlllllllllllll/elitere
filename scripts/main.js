@@ -1408,7 +1408,7 @@ document.addEventListener('DOMContentLoaded', () =>
 			{
 				Swal.fire(
 				{
-					text: 'Your Feedback has been successfully received, Thank You!',
+					text: 'Refund request received! Our team will review it and get back to you within 48 hours',
 					icon: 'success',
 					confirmButtonText: 'Ok',
 					background: '#121212',

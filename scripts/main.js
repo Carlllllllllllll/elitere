@@ -1328,53 +1328,6 @@ document.addEventListener('DOMContentLoaded', () =>
 				return false;
 			}
 
-			function isValidDate(dateString)
-			{
-				const dateFormats = [
-					/^\d{4}-\d{2}-\d{2}$/, 
-					/^\d{2}\/\d{2}\/\d{4}$/, 
-					/^\d{2}-\d{2}-\d{4}$/ 
-				];
-
-				if(!dateFormats.some((regex) => regex.test(dateString)))
-				{
-					return false; 
-				}
-
-				const parsedDate = new Date(dateString);
-				return !isNaN(parsedDate.getTime()); 
-			}
-
-			if(!refundDateValue || !isValidDate(refundDateValue))
-			{
-				showNotification("Invalid Date", "Please enter a valid refund date.");
-				return false;
-			}
-
-			function isValidDate(dateString)
-			{
-
-				let normalizedDate = dateString.replace(/[.\s/]/g, "-");
-
-				const dateFormats = [
-					/^\d{4}-\d{2}-\d{2}$/, 
-					/^\d{2}-\d{2}-\d{4}$/ 
-				];
-
-				if(!dateFormats.some((regex) => regex.test(normalizedDate)))
-				{
-					return false; 
-				}
-
-				const parsedDate = new Date(normalizedDate);
-				return !isNaN(parsedDate.getTime()); 
-			}
-
-			if(!refundDateValue || !isValidDate(refundDateValue))
-			{
-				showNotification("Invalid Date", "Please enter a valid refund date.");
-				return false;
-			}
 
 			if(!refundItemValue)
 			{

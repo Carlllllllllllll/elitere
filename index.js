@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3000;
 
 const corsOptions = {
     origin: (origin, callback) => {
-        const allowedOrigins = ['http://localhost:3000'];
+        const allowedOrigins = ['https://elitere.ooguy.com'];
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {

@@ -4,7 +4,6 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const crypto = require('crypto');
-const Fingerprint = require('express-fingerprint');
 const cors = require('cors');
 const axios = require('axios');
 const mongoose = require('mongoose');
@@ -116,35 +115,32 @@ const Report = mongoose.model('Report', reportSchema);
 
 const Feedback = mongoose.model('Feedback', feedbackSchema);
 
-const bannedLogCache = {};
-
-const generateUserId = (req) => {
+const generateUserId = (req, res) => {
     if (req.cookies.userId) {
-        return req.cookies.userId; 
+        return req.cookies.userId;
     }
 
-    const fingerprint = JSON.stringify(req.fingerprint.components);
-    
+    const fingerprintData = [
+        req.headers['user-agent'] || '',
+        req.headers['accept-language'] || '',
+        req.headers['referer'] || '',
+        req.connection.remoteAddress || '', 
+    ].join('|');
+
     const userId = crypto.createHash('sha256')
-        .update(fingerprint) 
+        .update(fingerprintData)
         .digest('hex');
 
-    req.res.cookie('userId', userId, { maxAge: 31556952000, httpOnly: true }); 
+    res.cookie('userId', userId, { maxAge: 31556952000, httpOnly: true }); 
     return userId;
 };
 
+const userIdMiddleware = (req, res, next) => {
+    req.userId = generateUserId(req, res);
+    next();
+};
 
-const fingerprintMiddleware = Fingerprint({
-    parameters: [
-        Fingerprint.useragent,
-        Fingerprint.acceptHeaders,
-        Fingerprint.geoip,
-        Fingerprint.device,
-        Fingerprint.screenResolution
-    ]
-});
-
-module.exports = { generateUserId, fingerprintMiddleware };
+module.exports = { generateUserId, userIdMiddleware };
 
 const checkIfBanned = async (userId) =>
 {

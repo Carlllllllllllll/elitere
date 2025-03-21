@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #1a1a1a;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            font-size: 6rem;
+            font-weight: bold;
+            color: #ff4d4d;
+            animation: bounce 1s infinite alternate;
+        }
+        p {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            color: #ccc;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #ff4d4d, #ff9900);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0px 5px 15px rgba(255, 77, 77, 0.3);
+        }
+        button:hover {
+            background: linear-gradient(45deg, #ff3333, #ff8800);
+            transform: scale(1.05);
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>404</h1>
+        <p>Oops! The page you're looking for doesn't exist.</p>
+        <button onclick="window.location.href='/'">Go Back Home</button>
+    </div>
+</body>
+</html>

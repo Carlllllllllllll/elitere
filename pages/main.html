@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+         <head>
+                  <meta charset="UTF-8">
+                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                  <link rel="icon" href="icon.png" type="image/png" sizes="16x16">
+                  <title>Elitère Store</title>
+                  <meta property="og:title" content="Elitère Store">
+                  <meta property="og:type" content="website">
+                  <meta property="og:image" content="logo.png">
+                  <meta property="og:site_name" content="Elitère Store">
+                  <meta property="og:locale" content="en_US">
+                  <meta property="og:description" content="ELITÈRE is a bold new sports brand committed to redefining elegance and performance in athletic wear. With a relentless focus on quality and innovation, we craft sophisticated, high-performance apparel designed for athletes across all sports.">
+                  <meta name="twitter:description" content="ELITÈRE is a bold new sports brand committed to redefining elegance and performance in athletic wear. With a relentless focus on quality and innovation, we craft sophisticated, high-performance apparel designed for athletes across all sports.">                  
+                  <meta name="twitter:card" content="summary_large_image">
+                  <meta name="twitter:image" content="logo.png">
+                  <meta name="twitter:site" content="@elitère">
+                  <meta name="theme-color" content="#000000">
+                  <link rel="stylesheet" href="main.css">
+                  
+         </head>
+
+         <nav class="flex items-center justify-between p-4 bg-black shadow-md relative sticky top-0 z-50">
+                  <div class="flex items-center">
+                    <img src="logo.png" alt="icon" class="h-16 w-16">
+                  </div>
+                  <div class="text-lg font-semibold tracking-wide text-white" style="margin-left: -29px;">
+                    Refine Your Style!
+                </div>
+
+                  <div id="cartContainer">
+                           <img src="cart-icon.png" id="cartIcon" />
+                           <span id="cartCount">0</span>
+                  </div>
+                  <div class="hamburger-menu">
+                           <span></span>
+                           <span></span>
+                           <span></span>
+                  </div>
+                  <div class="sidebar" id="sidebar">
+                           <h2>Menu</h2>
+                           <ul>
+                                    <li class="category">
+                                      <li class="category">
+                                        <div class="category-title">
+                                            <span class="icon">👕</span> PRODUCTS <span class="arrow">›</span>
+                                        </div>
+                                        <ul class="submenu">
+                                            <div class="category">
+                                                <div class="category-title">
+                                                    <span class="icon">🧔</span> MEN <span class="arrow">›</span>
+                                                </div>
+                                                <ul class="submenu">
+                                                    <li>
+                                                        <a href="#" data-category="Hats" class="button">Hats</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="category">
+                                                <div class="category-title">
+                                                    <span class="icon">👩</span> WOMEN <span class="arrow">›</span>
+                                                </div>
+                                                <ul class="submenu">
+                                                    <li>
+                                                        <a href="#" data-category="Hats" class="button">Hats</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </ul>
+                                    </li>
+
+                                    <li class="category">
+                                             <div class="category-title">
+                                                      <span class="icon">ⓘ</span> INFORMATION <span class="arrow">›</span>
+                                             </div>
+                                             <ul class="submenu">
+                                                      <li>
+                                                               <a href="#" id="aboutUsLink">About Us</a>
+                                                      </li>
+                                             </ul>
+                                    </li>
+                                    <li class="category">
+                                             <div class="category-title">
+                                                      <span class="icon">❓</span> HELP <span class="arrow">›</span>
+                                             </div>
+                                             <ul class="submenu">
+                                                      <li>
+                                                               <button id="reportButton">Report Issue</button>
+                                                      </li>
+                                                      <li>
+                                                               <button id="feedbackButton">Feedback</button>
+                                                      </li>
+                                                      <li>
+                                                               <button id="refundButton">Refund Request</button>
+                                                      </li>
+                                    </li>
+                           </ul>
+                           </li>
+                           </ul>
+                  </div>
+         </nav>
+         <div class="product-container" id="productContainer"></div>
+         <div id="productModal" class="modal">
+                  <div class="modal-content">
+                           <h2 id="modalTitle"></h2>
+                           <span id="closeModal" class="close">&times;</span>
+                           <img id="modalImage" class="modal-image">
+                           <div class="controls">
+                                    <button id="prevImage" class="nav-button">❮</button>
+                                    <button id="nextImage" class="nav-button">❯</button>
+                           </div>
+                           <div id="imageDots" class="dots-container"></div>
+                           <div id="modalName" class="modal-title"></div>
+                           <div id="modalPrice" class="modal-price"></div>
+                           <div id="modalStock" class="modal-stock"></div>
+                           <div id="modalSizes" class="modal-sizes"></div>
+                           <div id="modalColors" class="modal-colors"></div>
+                           <div id="modalDescription" class="modal-description"></div>
+                           <label for="sizeSelect">Size:</label>
+                           <select id="sizeSelect"></select>
+                           <label for="colorSelect">Color:</label>
+                           <select id="colorSelect"></select>
+                           <label for="quantityInput">Quantity:</label>
+                           <input type="number" id="quantityInput" min="1" max="5" value="1">
+                           <button id="addToCartBtn">Add to Cart</button>
+                  </div>
+         </div>
+         <div id="cartModal" class="cart-modal hidden">
+                  <div class="cart-modal-content">
+                           <button id="closeCartModal" class="close-cart">&times;</button>
+                           <h2 class="cart-title">Your Cart</h2>
+                           <div id="cartItems" class="cart-items"></div>
+                  </div>
+         </div>
+         <div id="checkoutModal" class="modal hidden">
+                  <div class="modal-content">
+                           <span id="closeCheckoutModal" class="close">&times;</span>
+                           <h2 class="checkout">Checkout</h2>
+                           <input type="text" id="first-name" placeholder="First Name" required>
+                           <input type="text" id="last-name" placeholder="Last Name" required>
+                           <input type="email" id="email" placeholder="Email" required>
+                           <select id="location" required>
+                            <option value="" disabled selected style="color: gray;">Select Location</option>
+                            <option value="Cairo">Cairo</option>
+                            <option value="Giza">Giza</option>
+                            <option value="Alexandria">Alexandria</option>
+                            <option value="South Sinai">South Sinai</option>
+                            <option value="Red Sea">Red Sea</option>
+                            <option value="Luxor">Luxor</option>
+                            <option value="Aswan">Aswan</option>
+                            <option value="Sharqia">Sharqia</option>
+                            <option value="Dakahlia">Dakahlia</option>
+                            <option value="Beheira">Beheira</option>
+                            <option value="Minya">Minya</option>
+                            <option value="Suez">Suez</option>
+                            <option value="Ismailia">Ismailia</option>
+                            <option value="Port Said">Port Said</option>
+                            <option value="Qalyubia">Qalyubia</option>
+                            <option value="Sohag">Sohag</option>
+                            <option value="Beni Suef">Beni Suef</option>
+                            <option value="Fayoum">Fayoum</option>
+                            <option value="Qena">Qena</option>
+                            <option value="Assiut">Assiut</option>
+                        </select>
+
+                           <input type="text" id="city" placeholder="City" required>
+                           <input type="text" id="street-name" placeholder="Street Name" required>
+                           <input type="tel" id="phone1" placeholder="Phone Number 1" required>
+                           <input type="tel" id="phone2" placeholder="Phone Number 2 (Optional)">
+                           <select id="payment-method" required>
+                            <option value="" disabled selected>Payment Method</option>
+                            <option value="instapay">Instapay Payment</option>
+                            <option value="wallet">Mobile Wallet Payment</option>
+                           </select>
+
+                           <div id="wallet-info" class="hidden">
+                            <p>To complete your order, please transfer the total amount to <a href="tel:01144771118">01144771118</a>. Once the payment is made, send a screenshot of the successful transfer to the same number via WhatsApp, along with your Order ID. Secure your order now, and we’ll handle the rest!</p>
+                           </div>
+
+                           <div id="instapay" class="hidden"> 
+                            <p>To complete your order, please transfer the total amount to <a href="https://www.instapay.eg/">instapay@instapay.com</a></a>. Once the payment is made, send a screenshot of the successful transfer to this this number <a href="tel:01144771118">01144771118</a>  via WhatsApp, along with your Order ID. Secure your order now, and we’ll handle the rest!</p>
+                        </div>
+
+                           <div id="cart-items"></div>
+                           <div id="total-price"></div>
+                           <button type="submit" id="order-submit">
+                                    <span class="btn-text">Place Order</span>
+                           </button>
+                  </div>
+         </div>
+         <div id="orderModal" class="modal">
+                  <div class="modal-content" id="orderModalContent"></div>
+         </div>
+         <div class="welcome-container">
+                <div id="welcomeContainer">
+                    <h1 class="typing"></h1>
+                </div>
+       </div>
+
+         <div id="reportModal" class="modal hidden">
+                  <div class="modal-content">
+                           <h2 class="report">Report</h2>
+                           <input type="text" id="report-first-name" placeholder="First Name" required>
+                           <input type="text" id="report-last-name" placeholder="Last Name" required>
+                           <input type="email" id="report-email" placeholder="Email" required>
+                           <input type="tel" id="report-phone1" placeholder="Phone Number 1" required>
+                           <input type="tel" id="report-phone2" placeholder="Phone Number 2 (Optional)">
+                           <input type="text" id="report-description" placeholder="Detail your report concisely" required>
+                           <div class="center-container">
+                                    <button type="button" id="submit-report">
+                                             <span class="submit-report">Submit</span>
+                                    </button>
+                           </div>
+                           <span id="closeReportModal" class="close">&times;</span>
+                  </div>
+         </div>
+         <div id="feedbackModal" class="modal hidden">
+                  <div class="modal-content">
+                           <h2 class="feedback">Feedback</h2>
+                           <input type="text" id="fdescription" placeholder="Type your feedback here" required>
+                           <div class="center-container">
+                                    <button type="submit" id="feedback-submit">
+                                             <span class="feedback-submit">Submit</span>
+                                    </button>
+                           </div>
+                           <span id="closeFeedbackModal" class="close">&times;</span>
+                  </div>
+         </div>
+         <div id="refundModal" class="modal hidden">
+                  <div class="modal-content">
+                           <h2 class="report">Refund Request</h2>
+                           <input type="text" id="refund-first-name" placeholder="First Name (as on your order)" required>
+                           <input type="text" id="refund-last-name" placeholder="Last Name (as on your order)" required>
+                           <input type="email" id="refund-email" placeholder="Email (as on your order)" required>
+                           <input type="tel" id="refund-phone1" placeholder="Phone Number 1 (as on your order)" required>
+                           <input type="tel" id="refund-phone2" placeholder="Phone Number 2 (Optional)">
+                           <input type="text" id="refund-date" placeholder="Order Date" required>
+                           <input type="text" id="refund-orderID" placeholder="Order ID" required>
+                           <input type="text" id="refund-item" placeholder="Product Name" required>
+                           <input type="text" id="refund-why" placeholder="Reason for Refund" required>
+                           <div class="center-container">
+                                    <button type="button" id="submit-refund">
+                                             <span class="submit-refund">Submit</span>
+                                    </button>
+                           </div>
+                           <span id="closerefundModal" class="close">&times;</span>
+                  </div>
+         </div>
+
+         <div id="aboutUsSection" class="hidden">
+                  <h2>About Us</h2>
+                  <p>
+                           <strong>ELITÈRE</strong> is a bold new sports brand committed to redefining elegance and performance in athletic wear. With a relentless focus on quality and innovation, we craft sophisticated, high-performance apparel designed for athletes across all sports.
+                  </p>
+                  <p>Each piece seamlessly blends style and function, delivering exceptional comfort, durability, and a sleek, modern aesthetic.</p>
+                  <p>At <strong>ELITÈRE</strong>, we don’t just create sportswear—we set a standard of excellence. Our mission is to empower athletes to push their limits while embodying grace and strength. </p>
+                  <p>
+                           <strong>Contact Us:</strong>
+                  </p>
+                  <p>Email: <a href="mailto:eliterebrand@gmail.com">eliterebrand@gmail.com</a>
+                  </p>
+                  <p>Phone: <a href="tel:01144771118">01144771118</a>
+                  </p>
+         </div>
+         <div id="privacyPolicySection" class="hidden">
+            <h2>Privacy & Refund Policy</h2>
+            <p>
+                <strong>Your Privacy, Our Commitment.</strong>
+            </p>
+            <p>At <strong>ELITÈRE</strong>, we take privacy and customer satisfaction as seriously as we take performance and style. When you shop with us, your data stays safe, your experience stays premium, and your trust stays unshaken.</p>
+            
+            <h3>1. Clothing Brand Rules</h3>
+            <ul>
+                <li><strong>Authenticity First:</strong> All products sold under ELITÈRE are 100% authentic and meet our high-quality standards.</li>
+                <li><strong>Exclusive Designs:</strong> Our collections are unique, and any imitation or resale without permission is strictly prohibited.</li>
+                <li><strong>Limited Drops:</strong> Many items are limited edition and will not be restocked once sold out.</li>
+                <li><strong>Care Instructions:</strong> Follow the recommended care guide for maximum longevity and performance.</li>
+            </ul>
+            
+            <h3>2. Payment & Security – Secure & Seamless</h3>
+            <p>We keep it simple and flexible: Pay with <strong>Instapay</strong> or <strong>Mobile Wallet Transfer</strong>. No card details, no risks—just a smooth and secure experience. We <strong>DO NOT</strong> offer Cash on Delivery due to frequent scams.</p>
+            <p>If you choose Instapay or Mobile Wallet Transfer, send the total amount to <a href="https://www.instapay.eg/">instapay@instapay.com</a>  for PayPal transfer and <a href="tel:01144771118">01144771118</a> for Mobile Wallet Transfer, then share a screenshot of the successful payment on WhatsApp on this number <a href="tel:01144771118">01144771118</a> along with your Order ID. Need help? We've got you covered!</p>
+            
+            <h3>3. Refund & Exchange Policy – Designed for Your Confidence</h3>
+            <p>We’re committed to delivering quality and style. While all sales are final, we’re here to help if anything goes wrong:</p>
+            <ul>
+                <li><strong>No Refunds:</strong> Payments made via <strong>Instapay</strong> or <strong>Mobile Wallet Transfer</strong> are final to maintain a smooth, risk-free shopping experience.</li>
+                <li><strong>Exchange Only:</strong> If you receive the wrong item or a damaged piece, you can request an exchange within <strong>48 hours</strong> of delivery.</li>
+                <li><strong>Need Assistance?</strong> If you believe a refund is necessary, submit a refund request, and our team will review your case to find the best solution for you.</li>
+            </ul>
+            <p>Just reach out to our support team—we’ve got your back!</p>
+            
+            <h3>4. Your Data, Your Privacy – No Third Parties Allowed</h3>
+            <p>We protect your data like it’s our own. Your information is used only for processing orders and providing top-tier customer service. We never share, sell, or rent your details—because trust is non-negotiable.</p>
+            
+            <h3>5. Policy Updates – Keeping It Fresh</h3>
+            <p>As we grow, so do our policies. If we make changes, we’ll update this section to keep you in the loop. Stay tuned.</p>
+            
+            <p><strong>Need Help? We’re Just a Message Away.</strong></p>
+            <p>Email: <a href="mailto:eliterebrand@gmail.com">eliterebrand@gmail.com</a></p>
+            <p>Phone: <a href="tel:01144771118">01144771118</a></p>
+        </div>
+        
+        <div id="shippingPolicySection" class="hidden">
+            <h2>Shipping & Delivery</h2>
+            <p>
+                <strong>ELITÈRE – Fast, Reliable, and Exclusive Delivery.</strong>
+            </p>
+            <p> When you shop at <strong>ELITÈRE</strong>, you're not just ordering high-performance sportswear—you’re choosing speed, security, and a hassle-free experience. Our shipping policy ensures your order reaches you smoothly, so you can focus on what matters: looking and feeling elite. </p>
+            
+            <h3>1. Where We Deliver</h3>
+            <p>
+                <strong>ELITÈRE ships exclusively within Egypt.</strong> No international shipping—our focus is delivering top-tier service right where you need it.
+            </p>
+            
+            <h3>2. Delivery Time – Speed Meets Precision</h3>
+            <p> Once your order is confirmed, we process and ship it within <strong>2 to 5 business days</strong>, depending on your location in Egypt. </p>
+            
+            <h3>3. Payment Options – Secure & Scam-Free</h3>  
+            <p><strong>We do not offer Cash on Delivery (COD)</strong> due to the high risk of scams. Our payments are secure, and your trust matters. Choose between <strong>Instapay</strong> or <strong>Mobile Wallet Transfer</strong> for a smooth transaction.</p>  
+            <p>To complete your payment:</p>
+            <ul>
+                <li><strong>📲 Mobile Wallet Transfer:</strong> Send the total amount to <a href="tel:01144771118">01144771118</a> and share a screenshot of the successful payment on WhatsApp along with your Order ID.</li>
+                <li><strong>💳 Instapay:</strong> Transfer the payment securely to <a href="https://www.instapay.eg/">instapay@instapay.com</a> and share a screenshot of the successful payment on WhatsApp on this number <a href="tel:01144771118">01144771118</a> along with your Order ID.</li>
+            </ul>
+            
+            <h3>4. What Happens If You Miss Your Delivery?</h3>
+            <p> Our courier will contact you before arrival. If you're unavailable, don’t worry! We’ll schedule another attempt. If we can’t reach you after multiple tries, your order will be canceled. </p>
+            
+            <h3>5. Policy Updates – Stay in the Know</h3>
+            <p> We’re always working to enhance our services. If anything changes, we’ll update this section. Stay tuned for the latest shipping updates. </p>
+            
+            <p><strong>Got Questions? We’ve Got Answers.</strong></p>
+            <p>Email: <a href="mailto:eliterebrand@gmail.com">eliterebrand@gmail.com</a></p>
+            <p>Phone: <a href="tel:01144771118">01144771118</a></p>
+        </div>
+        
+        
+        
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="esc.js"></script>
+        <script src="feedback.js"></script>
+        <script src="footer.js"></script>
+        <script src="popup.js"></script>
+        <script src="products.js"></script>
+        <script src="refund.js"></script>
+        <script src="report.js"></script>
+        <script src="section.js"></script>
+        <script src="security.js"></script>
+        <script src="sidebar.js"></script>
+        <script src="welcomecontaier.js"></script>
+        
+         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+         <footer class="footer">
+                  <p>&copy; 2025 Elitère Store. All rights reserved.</p>
+                  <div class="footer-links">
+                           <a href="#" id="privacypolicyLink">Privacy Policy</a>
+                           <span class="separator">|</span>
+                           <a href="#" id="shippingpolicyLink">Shipping Policy</a>
+                  </div>
+         </footer>
+
+         <div class="popup-overlay"></div>
+
+         <div class="popup-modal">
+            <div class="popup-content">
+                <div class="popup">
+                    <h2>🚀 Welcome to Elitère Store!</h2>
+                  </div>
+                  
+                <p>Do you accept our policies?</p>
+                <div class="popup-links">
+                    <a href="#" id="privacypolicyLink">Privacy Policy</a>
+                    <span class="separator">|</span>
+                    <a href="#" id="shippingpolicyLink">Shipping Policy</a>
+                </div>
+                <div class="popup-buttons">
+                    <button class="popup-accept">Yes, I Accept ✅</button>
+                    <button class="popup-decline">No, I Disagree ❌</button>
+                </div>
+            </div>
+        </div>
+        
+
+
+         </body>
+</html>

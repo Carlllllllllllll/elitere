@@ -288,7 +288,7 @@ app.post('/api/orders', async (req, res) => {
                         
 						<div style="text-align: center;">
 							<img src="https://elitere.ooguy.com/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
-							<h2 style="color: #333 !important; font-size: 22px; font-weight: bold;">Order Confirmation</h2>
+							<h2 style="color: #fff !important; font-size: 22px; font-weight: bold;">Order Confirmation</h2>
 						</div>
             
                         <p style="color: #ddd !important; font-size: 16px; text-align: center;">
@@ -425,7 +425,7 @@ app.post('/api/reports', async (req, res) => {
                     
 						<div style="text-align: center;">
 							<img src="https://elitere.ooguy.com/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
-							<h2 style="color: #333 !important; font-size: 22px; font-weight: bold;">Order Confirmation</h2>
+							<h2 style="color: #fff !important; font-size: 22px; font-weight: bold;">Report Confirmation</h2>
 						</div>
             
                     <p style="color: #ddd !important; font-size: 16px; text-align: center;">
@@ -655,7 +655,7 @@ app.post('/api/refunds', async (req, res) => {
                 { upsert: true, new: true }
             );
 
-            // **Send Confirmation Email**
+
             const mailOptions = {
                 from: `"Elitère Store" <${process.env.GMAIL_USER}>`,
                 to: email,
@@ -665,7 +665,7 @@ app.post('/api/refunds', async (req, res) => {
                         
 						<div style="text-align: center;">
 							<img src="https://elitere.ooguy.com/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
-							<h2 style="color: #333 !important; font-size: 22px; font-weight: bold;">Order Confirmation</h2>
+							<h2 style="color: #fff !important; font-size: 22px; font-weight: bold;">Refund Confirmation</h2>
 						</div>
             
                         <p style="color: #ddd !important; font-size: 16px; text-align: center;">

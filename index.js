@@ -4,6 +4,7 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const crypto = require('crypto');
+const Fingerprint = require('express-fingerprint');
 const cors = require('cors');
 const axios = require('axios');
 const mongoose = require('mongoose');
@@ -122,13 +123,28 @@ const generateUserId = (req) => {
         return req.cookies.userId; 
     }
 
+    const fingerprint = JSON.stringify(req.fingerprint.components);
+    
     const userId = crypto.createHash('sha256')
-        .update(req.headers['user-agent'] + Math.random().toString()) 
+        .update(fingerprint) 
         .digest('hex');
 
     req.res.cookie('userId', userId, { maxAge: 31556952000, httpOnly: true }); 
     return userId;
 };
+
+
+const fingerprintMiddleware = Fingerprint({
+    parameters: [
+        Fingerprint.useragent,
+        Fingerprint.acceptHeaders,
+        Fingerprint.geoip,
+        Fingerprint.device,
+        Fingerprint.screenResolution
+    ]
+});
+
+module.exports = { generateUserId, fingerprintMiddleware };
 
 const checkIfBanned = async (userId) =>
 {
@@ -274,10 +290,10 @@ app.post('/api/orders', async (req, res) => {
                 html: `
                     <div style="font-family: Arial, sans-serif; max-width: 650px; margin: auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; background: black !important; background: linear-gradient(135deg, #ffffff, #f8f9fa); box-shadow: 0px 4px 15px rgba(0,0,0,0.1); color: #222 !important;">
                         
-                        <div style="text-align: center;">
-                            <img src="https://elitere.ooguy.com/logo.png?id=${Date.now()}" alt="Company Logo" style="display: block !important; max-width: 180px; margin-bottom: 15px;"> 
-                            <h2 style="color: #fff !important; font-size: 22px; font-weight: bold;">Order Confirmation</h2>
-                        </div>
+						<div style="text-align: center;">
+							<img src="https://elitere.ooguy.com/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
+							<h2 style="color: #333 !important; font-size: 22px; font-weight: bold;">Order Confirmation</h2>
+						</div>
             
                         <p style="color: #ddd !important; font-size: 16px; text-align: center;">
                             Thank you for your order, <strong style="color: #fff !important;">${firstName} ${lastName}</strong>! <br> Your order has been successfully placed. 
@@ -411,10 +427,10 @@ app.post('/api/reports', async (req, res) => {
                 html: `
                 <div style="font-family: Arial, sans-serif; max-width: 650px; margin: auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; background: #000 !important; color: #fff !important; box-shadow: 0px 4px 15px rgba(0,0,0,0.1);">
                     
-                    <div style="text-align: center;">
-                        <img src="https://elitere.ooguy.com/logo.png?id=${Date.now()}" alt="Company Logo" style="display: block !important; max-width: 180px; margin-bottom: 15px;"> 
-                        <h2 style="color: #fff !important; font-size: 22px; font-weight: bold;">Report Received</h2>
-                    </div>
+						<div style="text-align: center;">
+							<img src="https://elitere.ooguy.com/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
+							<h2 style="color: #333 !important; font-size: 22px; font-weight: bold;">Order Confirmation</h2>
+						</div>
             
                     <p style="color: #ddd !important; font-size: 16px; text-align: center;">
                         Hello <strong style="color: #fff !important;">${firstName}</strong>, <br>
@@ -651,10 +667,10 @@ app.post('/api/refunds', async (req, res) => {
                 html: `
                     <div style="font-family: Arial, sans-serif; max-width: 650px; margin: auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; background: #000 !important; box-shadow: 0px 4px 15px rgba(0,0,0,0.1); color: #fff !important;">
                         
-                        <div style="text-align: center;">
-                            <img src="https://elitere.ooguy.com/logo.png?id=${Date.now()}" alt="Company Logo" style="display: block !important; max-width: 180px; margin-bottom: 15px;"> 
-                            <h2 style="color: #fff !important; font-size: 22px; font-weight: bold;">Refund Request Confirmation</h2>
-                        </div>
+						<div style="text-align: center;">
+							<img src="https://elitere.ooguy.com/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
+							<h2 style="color: #333 !important; font-size: 22px; font-weight: bold;">Order Confirmation</h2>
+						</div>
             
                         <p style="color: #ddd !important; font-size: 16px; text-align: center;">
                             Hello <strong style="color: #fff !important;">${firstName}</strong>, we have received your refund request. <br> 

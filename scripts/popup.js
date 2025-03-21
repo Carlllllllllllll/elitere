@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     declineBtn.addEventListener("click", () => {
         alert("You must accept the policy to continue.");
-        window.location.href = "https://www.google.com"; 
     });
 
     document.addEventListener("click", (event) => {

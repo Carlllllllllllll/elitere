@@ -120,8 +120,6 @@ const generateUserId = (req) =>
 	return crypto.createHash('sha256').update(req.headers['user-agent'] + req.ip).digest('hex');
 };
 
-module.exports = { generateUserId, userIdMiddleware };
-
 const checkIfBanned = async (userId) =>
 {
 	const bannedUsers = process.env.BANNED_USERS ? process.env.BANNED_USERS.split('/') : [];

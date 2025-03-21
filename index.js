@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 3000;
 
 const corsOptions = {
     origin: (origin, callback) => {
-        const allowedOrigins = ['https://elitere.ooguy.com'];
+        const allowedOrigins = ['http://localhost:3000'];
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
@@ -267,59 +267,59 @@ app.post('/api/orders', async (req, res) => {
                 { upsert: true, new: true }
             );
 
-			const mailOptions = {
-				from: `"Elitère Store" <${process.env.GMAIL_USER}>`,
-				to: email,
-				subject: 'Order Confirmation ',
-				html: `
-					<div style="font-family: Arial, sans-serif; max-width: 650px; margin: auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; background: linear-gradient(135deg, #ffffff, #f8f9fa); box-shadow: 0px 4px 15px rgba(0,0,0,0.1); color: #222 !important;">
-						
-						<div style="text-align: center;">
-							<img src="https://elitere.ooguy.com/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
-							<h2 style="color: #333 !important; font-size: 22px; font-weight: bold;">Order Confirmation</h2>
-						</div>
-			
-						<p style="color: #444 !important; font-size: 16px; text-align: center;">
-							Thank you for your order, <strong style="color: #222 !important;">${firstName} ${lastName}</strong>! <br> Your order has been successfully placed. 
-							<br><br>
-							<strong>If you already submitted this order, just ignore this message.</strong> This email was sent to confirm your purchase, but if you did not place this order, it might have been a mistake.
-						</p>
-			
-						<div style="background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0px 2px 8px rgba(0,0,0,0.1); margin-top: 15px;">
-							<p style="font-size: 18px; font-weight: bold; color: #222 !important;">🛍️ Order Summary</p>
-							<p style="color: #333 !important;"><strong>Order ID:</strong> ${orderId}</p>
-							<p style="color: #333 !important;"><strong>📍 Location:</strong> ${location}, ${city}, ${streetName}</p>
-							<p style="color: #333 !important;"><strong>📞 Phone:</strong> ${phone1} ${phone2 ? ` / ${phone2}` : ""}</p>
-							<p style="color: #333 !important;"><strong>💰 Total Price:</strong> ${totalPrice.replace(/[^\d.]/g, '') || ''} EGP</p>
-							<p style="color: #333 !important;"><strong>💳 Payment Method:</strong> ${paymentMethod === 'instapay' ? 'Instapay' : ' Mobile Wallet Payment'}</p>
-						</div>
-			
-						<div style="margin-top: 20px; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0px 2px 8px rgba(0,0,0,0.1);">
-							<p style="font-size: 18px; font-weight: bold; color: #222 !important;">🛒 Your Items</p>
-							${cartItems.map(item => `
-								<div style="display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #eee;">
-									<img src="${item.image}" alt="${item.name}" style="width: 60px; height: 60px; border-radius: 8px; margin-right: 15px;">
-									<div>
-										<p style="margin: 0; font-weight: bold; color: #333 !important;">${item.name}</p>
-										<p style="margin: 0; color: #777 !important;">Quantity: ${item.quantity} | Price: ${item.price} x1</p>
-									</div>
-								</div>
-							`).join('')}
-						</div>
-			
-						<p style="color: #555 !important; font-size: 14px; text-align: center; margin-top: 20px;">We will contact you shortly to confirm your order.</p>
-						<div style="text-align: center; margin-top: 20px;">
-							<a href="https://elitere.ooguy.com" style="background: #007bff; color: #fff !important; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; display: inline-block; font-weight: bold;">
-								🔗 Visit Elitère Store
-							</a>
-						</div>
-						<p style="text-align: center; font-size: 12px; color: #aaa !important; margin-top: 20px;">
-							© 2025 Elitère Store. All rights reserved.
-						</p>
-					</div>
-				`
-			};
-			
+            const mailOptions = {
+                from: `"Elitère Store" <${process.env.GMAIL_USER}>`,
+                to: email,
+                subject: 'Order Confirmation ',
+                html: `
+                    <div style="font-family: Arial, sans-serif; max-width: 650px; margin: auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; background: black !important; background: linear-gradient(135deg, #ffffff, #f8f9fa); box-shadow: 0px 4px 15px rgba(0,0,0,0.1); color: #222 !important;">
+                        
+                        <div style="text-align: center;">
+                            <img src="http://localhost:3000/logo.png?id=${Date.now()}" alt="Company Logo" style="display: block !important; max-width: 180px; margin-bottom: 15px;"> 
+                            <h2 style="color: #fff !important; font-size: 22px; font-weight: bold;">Order Confirmation</h2>
+                        </div>
+            
+                        <p style="color: #ddd !important; font-size: 16px; text-align: center;">
+                            Thank you for your order, <strong style="color: #fff !important;">${firstName} ${lastName}</strong>! <br> Your order has been successfully placed. 
+                            <br><br>
+                            <strong>If you already submitted this order, just ignore this message.</strong> This email was sent to confirm your purchase, but if you did not place this order, it might have been a mistake.
+                        </p>
+            
+                        <div style="background: #222; padding: 20px; border-radius: 10px; box-shadow: 0px 2px 8px rgba(0,0,0,0.1); margin-top: 15px;">
+                            <p style="font-size: 18px; font-weight: bold; color: #fff !important;">🛍️ Order Summary</p>
+                            <p style="color: #ddd !important;"><strong>Order ID:</strong> ${orderId}</p>
+                            <p style="color: #ddd !important;"><strong>📍 Location:</strong> ${location}, ${city}, ${streetName}</p>
+                            <p style="color: #ddd !important;"><strong>📞 Phone:</strong> ${phone1} ${phone2 ? ` / ${phone2}` : ""}</p>
+                            <p style="color: #ddd !important;"><strong>💰 Total Price:</strong> ${totalPrice.replace(/[^\d.]/g, '') || ''} EGP</p>
+                            <p style="color: #ddd !important;"><strong>💳 Payment Method:</strong> ${paymentMethod === 'instapay' ? 'Instapay' : ' Mobile Wallet Payment'}</p>
+                        </div>
+            
+                        <div style="margin-top: 20px; background: #222; padding: 20px; border-radius: 10px; box-shadow: 0px 2px 8px rgba(0,0,0,0.1);">
+                            <p style="font-size: 18px; font-weight: bold; color: #fff !important;">🛒 Your Items</p>
+                            ${cartItems.map(item => `
+                                <div style="display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #444;">
+                                    <img src="${item.image}" alt="${item.name}" style="width: 60px; height: 60px; border-radius: 8px; margin-right: 15px;">
+                                    <div>
+                                        <p style="margin: 0; font-weight: bold; color: #fff !important;">${item.name}</p>
+                                        <p style="margin: 0; color: #bbb !important;">Quantity: ${item.quantity} | Price: ${item.price} x1</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+            
+                        <p style="color: #aaa !important; font-size: 14px; text-align: center; margin-top: 20px;">We will contact you shortly to confirm your order.</p>
+                        <div style="text-align: center; margin-top: 20px;">
+                            <a href="http://localhost:3000" style="background: #007bff; color: #fff !important; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; display: inline-block; font-weight: bold;">
+                                🔗 Visit Elitère Store
+                            </a>
+                        </div>
+                        <p style="text-align: center; font-size: 12px; color: #888 !important; margin-top: 20px;">
+                            © 2025 Elitère Store. All rights reserved.
+                        </p>
+                    </div>
+                `
+            };
+            
 			
             await transporter.sendMail(mailOptions);
 
@@ -409,42 +409,42 @@ app.post('/api/reports', async (req, res) => {
                 to: email,
                 subject: 'Report Confirmation',
                 html: `
-                <div style="font-family: Arial, sans-serif; max-width: 650px; margin: auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; background: linear-gradient(135deg, #ffffff, #f8f9fa); box-shadow: 0px 4px 15px rgba(0,0,0,0.1); color: #222 !important;">
+                <div style="font-family: Arial, sans-serif; max-width: 650px; margin: auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; background: #000 !important; color: #fff !important; box-shadow: 0px 4px 15px rgba(0,0,0,0.1);">
                     
                     <div style="text-align: center;">
-                        <img src="https://elitere.ooguy.com/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
-                        <h2 style="color: #333 !important; font-size: 22px; font-weight: bold;">Report Received</h2>
+                        <img src="http://localhost:3000/logo.png?id=${Date.now()}" alt="Company Logo" style="display: block !important; max-width: 180px; margin-bottom: 15px;"> 
+                        <h2 style="color: #fff !important; font-size: 22px; font-weight: bold;">Report Received</h2>
                     </div>
-        
-                    <p style="color: #444 !important; font-size: 16px; text-align: center;">
-                        Hello <strong style="color: #222 !important;">${firstName}</strong>, <br>
+            
+                    <p style="color: #ddd !important; font-size: 16px; text-align: center;">
+                        Hello <strong style="color: #fff !important;">${firstName}</strong>, <br>
                         We have received your report and will respond to you as soon as possible.
                     </p>
-        
-                    <div style="background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0px 2px 8px rgba(0,0,0,0.1); margin-top: 15px;">
-                        <p style="font-size: 18px; font-weight: bold; color: #222 !important;">📩 Report Details</p>
-                        <p style="color: #333 !important;"><strong>👤 Name:</strong> ${firstName} ${lastName}</p>
-                        <p style="color: #333 !important;"><strong>📞 Phone:</strong> ${phone1} ${phone2 ? ` / ${phone2}` : ""}</p>
-                        <p style="color: #333 !important;"><strong>📩 Report:</strong> ${description}</p>
+            
+                    <div style="background: #222; padding: 20px; border-radius: 10px; box-shadow: 0px 2px 8px rgba(0,0,0,0.1); margin-top: 15px;">
+                        <p style="font-size: 18px; font-weight: bold; color: #fff !important;">📩 Report Details</p>
+                        <p style="color: #ccc !important;"><strong>👤 Name:</strong> ${firstName} ${lastName}</p>
+                        <p style="color: #ccc !important;"><strong>📞 Phone:</strong> ${phone1} ${phone2 ? ` / ${phone2}` : ""}</p>
+                        <p style="color: #ccc !important;"><strong>📩 Report:</strong> ${description}</p>
                     </div>
-
-                    <p style="color: #555 !important; font-size: 14px; text-align: center; margin-top: 20px;">
+            
+                    <p style="color: #bbb !important; font-size: 14px; text-align: center; margin-top: 20px;">
                         We will contact you shortly regarding your report. Thank you for your patience.
                     </p>
-
+            
                     <div style="text-align: center; margin-top: 20px;">
-                        <a href="https://elitere.ooguy.com" style="background: #007bff; color: #fff !important; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; display: inline-block; font-weight: bold;">
+                        <a href="http://localhost:3000" style="background: #007bff; color: #fff !important; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; display: inline-block; font-weight: bold;">
                             🔗 Visit Elitère Store
                         </a>
                     </div>
                     
-                    <p style="text-align: center; font-size: 12px; color: #aaa !important; margin-top: 20px;">
+                    <p style="text-align: center; font-size: 12px; color: #888 !important; margin-top: 20px;">
                         © 2025 Elitère Support. All rights reserved.
                     </p>
                 </div>
                 `
             };
-
+            
             await transporter.sendMail(mailOptions);
 
             return res.status(200).json({
@@ -649,39 +649,42 @@ app.post('/api/refunds', async (req, res) => {
                 to: email,
                 subject: 'Refund Request',
                 html: `
-                <div style="font-family: Arial, sans-serif; max-width: 650px; margin: auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; background: linear-gradient(135deg, #ffffff, #f8f9fa); box-shadow: 0px 4px 15px rgba(0,0,0,0.1); color: #222 !important;">
-                    
-                    <div style="text-align: center;">
-                        <img src="https://elitere.ooguy.com/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
-                        <h2 style="color: #333 !important; font-size: 22px; font-weight: bold;">Refund Request Confirmation</h2>
-                    </div>
-        
-                    <p style="color: #444 !important; font-size: 16px; text-align: center;">
-                        Hello <strong style="color: #222 !important;">${firstName}</strong>, we have received your refund request. <br> 
-                        Our team will review it and respond as soon as possible. You will receive a follow-up email once your refund is processed.
-                    </p>
-        
-                    <div style="background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0px 2px 8px rgba(0,0,0,0.1); margin-top: 15px;">
-                        <p style="font-size: 18px; font-weight: bold; color: #222 !important;">📩 Refund Details</p>
-                        <p style="color: #333 !important;"><strong>First Name:</strong> ${firstName}</p>
-                        <p style="color: #333 !important;"><strong>Last Name:</strong> ${lastName}</p>
-                        <p style="color: #333 !important;"><strong>📞 Phone:</strong> ${phone1} ${phone2 ? `/ ${phone2}` : ""}</p>
-                        <p style="color: #333 !important;"><strong>🆔 Order ID:</strong> ${orderID}</p>
-						<p style="color: #333 !important;"><strong>📅 Date of your order:</strong> ${date}</p>
-                        <p style="color: #333 !important;"><strong>📦 Item you want to refund:</strong> ${item}</p>
-                        <p style="color: #333 !important;"><strong>❓ Reason:</strong> ${reason}</p>
-                    </div>
+                    <div style="font-family: Arial, sans-serif; max-width: 650px; margin: auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; background: #000 !important; box-shadow: 0px 4px 15px rgba(0,0,0,0.1); color: #fff !important;">
+                        
+                        <div style="text-align: center;">
+                            <img src="http://localhost:3000/logo.png?id=${Date.now()}" alt="Company Logo" style="display: block !important; max-width: 180px; margin-bottom: 15px;"> 
+                            <h2 style="color: #fff !important; font-size: 22px; font-weight: bold;">Refund Request Confirmation</h2>
+                        </div>
+            
+                        <p style="color: #ddd !important; font-size: 16px; text-align: center;">
+                            Hello <strong style="color: #fff !important;">${firstName}</strong>, we have received your refund request. <br> 
+                            Our team will review it and respond as soon as possible. You will receive a follow-up email once your refund is processed.
+                        </p>
+            
+                        <div style="background: #222; padding: 20px; border-radius: 10px; box-shadow: 0px 2px 8px rgba(0,0,0,0.1); margin-top: 15px;">
+                            <p style="font-size: 18px; font-weight: bold; color: #fff !important;">📩 Refund Details</p>
+                            <p style="color: #fff !important;"><strong>First Name:</strong> ${firstName}</p>
+                            <p style="color: #fff !important;"><strong>Last Name:</strong> ${lastName}</p>
+                            <p style="color: #fff !important;"><strong>📞 Phone:</strong> ${phone1} ${phone2 ? ` / ${phone2}` : ""}</p>
+                            <p style="color: #fff !important;"><strong>🆔 Order ID:</strong> ${orderID}</p>
+                            <p style="color: #fff !important;"><strong>📅 Date of your order:</strong> ${date}</p>
+                            <p style="color: #fff !important;"><strong>📦 Item you want to refund:</strong> ${item}</p>
+                            <p style="color: #fff !important;"><strong>❓ Reason:</strong> ${reason}</p>
+                        </div>
+            
+                        <div style="margin-top: 20px; text-align: center;">
+                            <p style="font-size: 14px; color: #ccc;">We appreciate your patience. If you have any further questions, feel free to contact us.</p>
+                            <a href="http://localhost:3000" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #000 !important; text-decoration: none; border-radius: 8px; font-size: 16px;">Visit Elitère Store</a>
+                        </div>
 
-                    <div style="margin-top: 20px; text-align: center;">
-                        <p style="font-size: 14px; color: #555;">We appreciate your patience. If you have any further questions, feel free to contact us.</p>
-                        <a href="https://elitere.ooguy.com" style="display: inline-block; padding: 10px 20px; background-color: #f1c40f; color: #007bff !important; text-decoration: none; border-radius: 8px; font-size: 16px;">Visit Elitère Store</a>
+            
+                        <div style="margin-top: 30px; font-size: 12px; color: #aaa; text-align: center;">
+                            <p>© 2025 Elitère Store. All rights reserved.</p>
+                        </div>
                     </div>
-
-                    <div style="margin-top: 30px; font-size: 12px; color: #888; text-align: center;">
-                        <p>© 2025 Elitère Store. All rights reserved.</p>
-                    </div>
-                </div>`
+                `
             };
+            
 
             await transporter.sendMail(mailOptions);
 

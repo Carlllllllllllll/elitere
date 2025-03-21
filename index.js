@@ -115,29 +115,9 @@ const Report = mongoose.model('Report', reportSchema);
 
 const Feedback = mongoose.model('Feedback', feedbackSchema);
 
-const generateUserId = (req, res) => {
-    if (req.cookies.userId) {
-        return req.cookies.userId;
-    }
-
-    const fingerprintData = [
-        req.headers['user-agent'] || '',
-        req.headers['accept-language'] || '',
-        req.headers['referer'] || '',
-        req.connection.remoteAddress || '', 
-    ].join('|');
-
-    const userId = crypto.createHash('sha256')
-        .update(fingerprintData)
-        .digest('hex');
-
-    res.cookie('userId', userId, { maxAge: 31556952000, httpOnly: true }); 
-    return userId;
-};
-
-const userIdMiddleware = (req, res, next) => {
-    req.userId = generateUserId(req, res);
-    next();
+const generateUserId = (req) =>
+{
+	return crypto.createHash('sha256').update(req.headers['user-agent'] + req.ip).digest('hex');
 };
 
 module.exports = { generateUserId, userIdMiddleware };

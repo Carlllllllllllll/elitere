@@ -227,7 +227,7 @@ app.post('/api/orders', async (req, res) => {
                 { name: "👤 Last Name", value: lastName, inline: true },
                 { name: "📧 Email", value: email, inline: true },
                 { name: "📍 Location", value: location, inline: true },
-                { name: "💰 Shipping Fee", value: `${shippingFee} EGP`, inline: true },
+                { name: "💰 Shipping Fee", value: `${shipFeePrice} EGP`, inline: true },
                 { name: "🏠 Street Name", value: streetName, inline: true },
                 { name: "🏙️ City", value: city, inline: true },
                 { name: "📞 Phone Number 1", value: phone1, inline: true },

@@ -204,6 +204,12 @@ const openModal = (product) =>
 		colorSelect.appendChild(option);
 	});
 
+	sizeSelect.value = product.sizes[0]; 
+    colorSelect.value = product.colors[0];
+
+    modalSizes.innerHTML = "";
+    modalColors.innerHTML = "";
+
 	modal.style.display = "flex";
 
 	let currentIndex = 0;
@@ -250,6 +256,11 @@ const openModal = (product) =>
 				let sizeBox = document.createElement("div");
 				sizeBox.classList.add("size-box");
 				sizeBox.textContent = size;
+
+				sizeBox.addEventListener("click", () => {
+                    sizeSelect.value = size; 
+                });
+
 				modalSizes.appendChild(sizeBox);
 			});
 		}
@@ -266,6 +277,11 @@ const openModal = (product) =>
 				let colorCircle = document.createElement("div");
 				colorCircle.classList.add("color-circle");
 				colorCircle.style.backgroundColor = color;
+
+				 colorCircle.addEventListener("click", () => {
+                    colorSelect.value = color; 
+                });
+
 				modalColors.appendChild(colorCircle);
 			});
 		}
@@ -556,10 +572,9 @@ const removeFromCart = (index) =>
 	displayCart();
 };
 
-
 document.addEventListener('DOMContentLoaded', () =>
     {
-        
+
         const submitorderdata = document.getElementById('order-submit');
         const firstName = document.getElementById('first-name');
         const lastName = document.getElementById('last-name');
@@ -572,45 +587,45 @@ document.addEventListener('DOMContentLoaded', () =>
         const cartItemsDiv = document.getElementById('cart-items');
         const totalPriceDiv = document.getElementById('total-price');
         const paymentMethod = document.getElementById('payment-method');
-    
+
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    
+
         const closeCheckoutModalButton = document.getElementById('closeCheckoutModal');
         closeCheckoutModalButton.addEventListener('click', () =>
         {
             document.getElementById("checkoutModal").style.display = "none";
         });
-    
+
         const displayCartItems = () =>
         {
             cartItemsDiv.innerHTML = '';
             let totalPrice = 0;
-    
+
             cart.forEach(item =>
             {
                 const itemDiv = document.createElement('div');
                 itemDiv.textContent = `${item.name} - ${item.price} x ${item.quantity}`;
                 cartItemsDiv.appendChild(itemDiv);
-    
+
                 const priceValue = parseFloat(item.price.replace('$', ''));
                 totalPrice += priceValue * item.quantity;
             });
-    
+
             totalPriceDiv.textContent = `Total Price: ${totalPrice.toFixed(2)}EGP`;
         };
-    
+
         displayCartItems();
-    
+
     submitorderdata.addEventListener('click', async (event) => {
         event.preventDefault();
-    
+
         const now = Date.now();
-    
+
         if (!validateForm()) return;
-    
-        const cart = JSON.parse(localStorage.getItem("cart")) || []; 
-    
-    
+
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+		const shippingFee = calculateShippingFee() 
+
         const formData = {
             firstName: firstName.value.trim(),
             lastName: lastName.value.trim(),
@@ -622,11 +637,10 @@ document.addEventListener('DOMContentLoaded', () =>
             phone2: phone2.value.trim() || "Not provided",
             cartItems: cart,
             totalPrice: totalPriceDiv.textContent.replace('Total Price: $', ''),
-            paymentMethod: paymentMethod.value
+            paymentMethod: paymentMethod.value,
+			shipFeePrice: shippingFee 
         };
-    
-      
-    
+
         try {
             const response = await fetch('https://elitere.ooguy.com/api/orders', {
                 method: 'POST',
@@ -635,7 +649,7 @@ document.addEventListener('DOMContentLoaded', () =>
                 },
                 body: JSON.stringify(formData)
             });
-    
+
             const data = await response.json();
 
 			if (response.status === 401 && data.message) {
@@ -653,7 +667,7 @@ document.addEventListener('DOMContentLoaded', () =>
 				});
 				return;
 			}
-    
+
             if (response.status === 429) {
                 Swal.fire({
                     text: 'You are on cooldown. Please try again later.',
@@ -669,37 +683,37 @@ document.addEventListener('DOMContentLoaded', () =>
                 });
                 return;
             }
-    
+
             if (response.ok) {
                 console.log("Order response:", data);
                 localStorage.setItem('LastOrderTime', Date.now());
                 document.getElementById("checkoutModal").style.display = "none";
-    
+
                 document.getElementById("orderModalContent").innerHTML = `  
                 <div style="text-align: center; font-family: 'Poppins', sans-serif; padding: 20px; background: #000; color: #fff; border-radius: 10px;">  
                     <h2 style="color: #4CAF50; font-size: 30px; font-weight: bold;">✅ Order Confirmed!</h2>  
                     <p style="font-size: 18px; color: #bbb;">Your order has been successfully placed. Thank you for shopping with us!</p>  
-            
+
                     <div style="background: #111; padding: 15px; border-radius: 10px; box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); margin-top: 15px;">  
                         <p style="font-size: 20px; font-weight: bold;">🆔 Order ID: <span style="color: #007bff;">${data.orderId}</span></p>  
                         <p><strong>👤 Name:</strong> ${formData.firstName} ${formData.lastName}</p>  
                         <p><strong>📧 Email:</strong> ${formData.email}</p>  
-                        <p><strong>📍 Location:</strong> ${formData.location}, ${formData.city}, ${formData.streetName}</p>  
+                        <p><strong>📍 Location:</strong> ${formData.location}, ${formData.city}, ${formData.streetName}</p> 
+						<p><strong>💰 Shipping Fee:</strong> ${formData.shipFeePrice}EGP</p>   
                         <p><strong>📞 Phone:</strong> ${formData.phone1} ${formData.phone2 ? ` / ${formData.phone2}` : ""}</p>  
                         <p><strong>💳 Payment Method:</strong> ${formData.paymentMethod === 'instapay' ? '💵 Instapay Payment' : '📱 Mobile Wallet Payment'}</p>  
                         <p><strong>💰 Total Price:</strong> <span style="color: #e91e63;">${formData.totalPrice.replace(/[^\d.]/g, '') || ''} EGP</span></p>  
                     </div>  
-            
+
                     <p style="margin-top: 15px; color: #ffcc00; font-size: 18px;">📩 We have sent an email with all the details and cart items.</p>  
                     <p style="color: #00e676; font-size: 18px;">⏳ Our team will review your order and respond within 24 hours.</p>  
-            
+
                     <button id="closeOrderModal" style="background: #222; color: #fff; padding: 12px 25px; font-size: 18px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; transition: 0.3s;">OK</button>  
                 </div>  
             `;  
-            
-    
+
                 document.getElementById("orderModal").style.display = "flex";
-    
+
                 document.getElementById("closeOrderModal").addEventListener("click", () => {
                     document.getElementById("orderModal").style.display = "none";
                     window.location.reload(true);
@@ -707,7 +721,7 @@ document.addEventListener('DOMContentLoaded', () =>
                     clearForm();
                     displayCartItems();
                 });
-    
+
                 localStorage.removeItem("cart");
                 clearForm();
                 displayCartItems();
@@ -720,8 +734,7 @@ document.addEventListener('DOMContentLoaded', () =>
             showNotification("Failed", "Failed to submit order. Please try again later");
         }
     });
-    
-    
+
     const validateForm = () => {
         const firstNameValue = document.getElementById("first-name").value.trim();
         const lastNameValue = document.getElementById("last-name").value.trim();
@@ -732,86 +745,84 @@ document.addEventListener('DOMContentLoaded', () =>
         const phone1Value = document.getElementById("phone1").value.trim();
         const phone2Value = document.getElementById("phone2") ? document.getElementById("phone2").value.trim() : "";
         const paymentMethodValue = document.getElementById("payment-method").value;
-    
+
         if (!firstNameValue) {
             showNotification("Missing Information", "First Name is missing.");
             return false;
         }
-    
+
         if (!lastNameValue) {
             showNotification("Missing Information", "Last Name is missing.");
             return false;
         }
-    
+
         if (!emailValue) {
             showNotification("Missing Information", "Email is missing.");
             return false;
         }
-    
+
         if (!locationValue) {
             showNotification("Missing Information", "Location is missing.");
             return false;
         }
-    
+
         if (!streetValue) {
             showNotification("Missing Information", "Street Name is missing.");
             return false;
         }
-    
+
         if (!cityValue) {
             showNotification("Missing Information", "City is missing.");
             return false;
         }
-    
+
         if (!phone1Value) {
             showNotification("Missing Information", "Phone Number 1 is missing.");
             return false;
         }
-    
+
         if (!paymentMethodValue) { 
             showNotification("Missing Information", "Payment Method is required.");
             return false;
         }
-    
+
         if (firstNameValue.split(' ').length > 2) {
             showNotification("Invalid Name", "Please type your first name correctly.");
             return false;
         }
-    
+
         if (lastNameValue.split(' ').length > 2) {
             showNotification("Invalid Name", "Please type your last name correctly.");
             return false;
         }
-    
+
         const phoneRegex = /^(010|011|012|015)\d{8}$/;
         if (!phoneRegex.test(phone1Value)) {
             showNotification("Invalid Phone", "Phone number is incorrect.");
             return false;
         }
-    
 
         if (phone2Value) {
             if (!phoneRegex.test(phone2Value)) {
                 showNotification("Invalid Phone", "Phone Number 2 is incorrect.");
                 return false;
             }
-    
+
             if (phone1Value === phone2Value) {
                 showNotification("Invalid Phone", "Phone Number 2 cannot be the same as Phone Number 1.");
                 return false;
             }
         }
-    
+
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(emailValue)) {
             showNotification("Invalid Email", "Please enter a valid email address.");
             return false;
         }
-    
+
         return true;
     };
-    
-    
+
         const clearForm = () =>
         {
             firstName.value = '';
@@ -827,7 +838,6 @@ document.addEventListener('DOMContentLoaded', () =>
 
     document.getElementById('checkoutModal').style.display = 'none';
 document.body.style.overflow = 'auto';
-
 
 document.getElementById("payment-method").addEventListener("change", function () {
     const walletInfo = document.getElementById("wallet-info");
@@ -897,7 +907,6 @@ document.getElementById("city").addEventListener("change", function() {
     totalPriceDiv.textContent = `Total Price: ${totalPrice.toFixed(2)}EGP (Shipping: ${shippingFee}EGP)`;
 	displayCartItemsInCheckoutModal();
 });
-
 
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("aboutUsSection").style.display = "none"; 

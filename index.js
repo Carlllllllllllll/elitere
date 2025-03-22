@@ -236,9 +236,12 @@ app.post('/api/orders', async (req, res) => {
                 { name: "📞 Phone Number 2", value: phone2 || "N/A", inline: true },
                 {
                     name: "🛍️ Cart Items",
-                    value: cartItems.map(item => `**${item.name}** - ${item.quantity} x ${item.price}`).join("\n"),
+                    value: cartItems.map(item => 
+                        `**${item.name}** - ${item.quantity} x ${item.price} | 🏷️ ${item.size} | 🎨 ${item.color}`
+                    ).join("\n"),
                     inline: false
                 },
+                
                 { name: "💳 Payment Method", value: paymentMethod === 'instapay' ? "Instapay Payment" : "Wallet Payment", inline: true },
                 { name: "💰 Total Price", value: `${totalPrice}`, inline: true },
                 { name: "🆔 Order ID", value: orderId, inline: true },
@@ -291,12 +294,15 @@ app.post('/api/orders', async (req, res) => {
                                     <img src="${item.image}" alt="${item.name}" style="width: 60px; height: 60px; border-radius: 8px; margin-right: 15px;">
                                     <div>
                                         <p style="margin: 0; font-weight: bold; color: #fff !important;">${item.name}</p>
-                                        <p style="margin: 0; color: #bbb !important;">Quantity: ${item.quantity} | Price: ${item.price} x1</p>
+                                        <p style="margin: 0; color: #bbb !important;">
+                                            Quantity: ${item.quantity} | Price: ${item.price} x1 | 
+                                            <span style="color: #fff;">🏷️ ${item.size}</span> | 
+                                            <span style="color: ${item.color.toLowerCase()};">🎨 ${item.color}</span>
+                                        </p>
                                     </div>
                                 </div>
                             `).join('')}
-                        </div>
-            
+                            
                         <p style="color: #aaa !important; font-size: 14px; text-align: center; margin-top: 20px;">We will contact you shortly to confirm your order.</p>
                         <div style="text-align: center; margin-top: 20px;">
                             <a href="https://elitere.ooguy.com" style="background: #007bff; color: #fff !important; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; display: inline-block; font-weight: bold;">

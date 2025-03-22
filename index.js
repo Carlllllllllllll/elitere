@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 3000;
 
 const corsOptions = {
     origin: (origin, callback) => {
-        const allowedOrigins = ['http://localhost:3000'];
+        const allowedOrigins = ['https://elitere.ooguy.com'];
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
@@ -266,7 +266,7 @@ app.post('/api/orders', async (req, res) => {
                     <div style="font-family: Arial, sans-serif; max-width: 650px; margin: auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; background: black !important; background: linear-gradient(135deg, #ffffff, #f8f9fa); box-shadow: 0px 4px 15px rgba(0,0,0,0.1); color: #222 !important;">
 
 						<div style="text-align: center;">
-							<img src="http://localhost:3000/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
+							<img src="https://elitere.ooguy.com/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
 							<h2 style="color: #fff !important; font-size: 22px; font-weight: bold;">Order Confirmation</h2>
 						</div>
 
@@ -304,7 +304,7 @@ app.post('/api/orders', async (req, res) => {
 
                         <p style="color: #aaa !important; font-size: 14px; text-align: center; margin-top: 20px;">We will contact you shortly to confirm your order.</p>
                         <div style="text-align: center; margin-top: 20px;">
-                            <a href="http://localhost:3000" style="background: #007bff; color: #fff !important; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; display: inline-block; font-weight: bold;">
+                            <a href="https://elitere.ooguy.com" style="background: #007bff; color: #fff !important; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; display: inline-block; font-weight: bold;">
                                 🔗 Visit Elitère Store
                             </a>
                         </div>
@@ -404,7 +404,7 @@ app.post('/api/reports', async (req, res) => {
                 <div style="font-family: Arial, sans-serif; max-width: 650px; margin: auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; background: #000 !important; color: #fff !important; box-shadow: 0px 4px 15px rgba(0,0,0,0.1);">
 
 						<div style="text-align: center;">
-							<img src="http://localhost:3000/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
+							<img src="https://elitere.ooguy.com/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
 							<h2 style="color: #fff !important; font-size: 22px; font-weight: bold;">Report Confirmation</h2>
 						</div>
 
@@ -425,7 +425,7 @@ app.post('/api/reports', async (req, res) => {
                     </p>
 
                     <div style="text-align: center; margin-top: 20px;">
-                        <a href="http://localhost:3000" style="background: #007bff; color: #fff !important; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; display: inline-block; font-weight: bold;">
+                        <a href="https://elitere.ooguy.com" style="background: #007bff; color: #fff !important; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; display: inline-block; font-weight: bold;">
                             🔗 Visit Elitère Store
                         </a>
                     </div>
@@ -642,7 +642,7 @@ app.post('/api/refunds', async (req, res) => {
                     <div style="font-family: Arial, sans-serif; max-width: 650px; margin: auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; background: #000 !important; box-shadow: 0px 4px 15px rgba(0,0,0,0.1); color: #fff !important;">
 
 						<div style="text-align: center;">
-							<img src="http://localhost:3000/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
+							<img src="https://elitere.ooguy.com/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
 							<h2 style="color: #fff !important; font-size: 22px; font-weight: bold;">Refund Confirmation</h2>
 						</div>
 
@@ -664,7 +664,7 @@ app.post('/api/refunds', async (req, res) => {
 
                         <div style="margin-top: 20px; text-align: center;">
                             <p style="font-size: 14px; color: #ccc;">We appreciate your patience. If you have any further questions, feel free to contact us.</p>
-                            <a href="http://localhost:3000" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #000 !important; text-decoration: none; border-radius: 8px; font-size: 16px;">Visit Elitère Store</a>
+                            <a href="https://elitere.ooguy.com" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #000 !important; text-decoration: none; border-radius: 8px; font-size: 16px;">Visit Elitère Store</a>
                         </div>
 
                         <div style="margin-top: 30px; font-size: 12px; color: #aaa; text-align: center;">

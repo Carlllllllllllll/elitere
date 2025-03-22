@@ -11,9 +11,6 @@ const nodemailer = require('nodemailer');
 const cookieParser = require('cookie-parser');
 const fs = require('fs');
 
-
-
-
 dotenv.config();
 
 const app = express();
@@ -22,7 +19,7 @@ const PORT = process.env.PORT || 3000;
 
 const corsOptions = {
     origin: (origin, callback) => {
-        const allowedOrigins = ['https://elitere.ooguy.com'];
+        const allowedOrigins = ['http://localhost:3000'];
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
@@ -158,7 +155,6 @@ const checkIfBanned = async (userId) =>
 
 const generateNonce = () => crypto.randomBytes(16).toString('base64');
 
-
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -186,7 +182,8 @@ app.post('/api/orders', async (req, res) => {
         phone2,
         cartItems,
         totalPrice,
-        paymentMethod
+        paymentMethod,
+        shipFeePrice
     } = req.body;
     const webhookURL = process.env.WEBHOOK_URL1;
     const userId = generateUserId(req);
@@ -230,6 +227,7 @@ app.post('/api/orders', async (req, res) => {
                 { name: "👤 Last Name", value: lastName, inline: true },
                 { name: "📧 Email", value: email, inline: true },
                 { name: "📍 Location", value: location, inline: true },
+                { name: "💰 Shipping Fee", value: `${shippingFee} EGP`, inline: true },
                 { name: "🏠 Street Name", value: streetName, inline: true },
                 { name: "🏙️ City", value: city, inline: true },
                 { name: "📞 Phone Number 1", value: phone1, inline: true },
@@ -241,7 +239,7 @@ app.post('/api/orders', async (req, res) => {
                     ).join("\n"),
                     inline: false
                 },
-                
+
                 { name: "💳 Payment Method", value: paymentMethod === 'instapay' ? "Instapay Payment" : "Wallet Payment", inline: true },
                 { name: "💰 Total Price", value: `${totalPrice}`, inline: true },
                 { name: "🆔 Order ID", value: orderId, inline: true },
@@ -266,27 +264,28 @@ app.post('/api/orders', async (req, res) => {
                 subject: 'Order Confirmation ',
                 html: `
                     <div style="font-family: Arial, sans-serif; max-width: 650px; margin: auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; background: black !important; background: linear-gradient(135deg, #ffffff, #f8f9fa); box-shadow: 0px 4px 15px rgba(0,0,0,0.1); color: #222 !important;">
-                        
+
 						<div style="text-align: center;">
-							<img src="https://elitere.ooguy.com/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
+							<img src="http://localhost:3000/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
 							<h2 style="color: #fff !important; font-size: 22px; font-weight: bold;">Order Confirmation</h2>
 						</div>
-            
+
                         <p style="color: #ddd !important; font-size: 16px; text-align: center;">
                             Thank you for your order, <strong style="color: #fff !important;">${firstName} ${lastName}</strong>! <br> Your order has been successfully placed. 
                             <br><br>
                             <strong>If you already submitted this order, just ignore this message.</strong> This email was sent to confirm your purchase, but if you did not place this order, it might have been a mistake.
                         </p>
-            
+
                         <div style="background: #222; padding: 20px; border-radius: 10px; box-shadow: 0px 2px 8px rgba(0,0,0,0.1); margin-top: 15px;">
                             <p style="font-size: 18px; font-weight: bold; color: #fff !important;">🛍️ Order Summary</p>
                             <p style="color: #ddd !important;"><strong>Order ID:</strong> ${orderId}</p>
                             <p style="color: #ddd !important;"><strong>📍 Location:</strong> ${location}, ${city}, ${streetName}</p>
+                            <p style="color: #ddd !important;"><strong>💰 Shipping Fee</strong> ${shipFeePrice}EGP</p>
                             <p style="color: #ddd !important;"><strong>📞 Phone:</strong> ${phone1} ${phone2 ? ` / ${phone2}` : ""}</p>
                             <p style="color: #ddd !important;"><strong>💰 Total Price:</strong> ${totalPrice.replace(/[^\d.]/g, '') || ''} EGP</p>
                             <p style="color: #ddd !important;"><strong>💳 Payment Method:</strong> ${paymentMethod === 'instapay' ? 'Instapay' : ' Mobile Wallet Payment'}</p>
                         </div>
-            
+
                         <div style="margin-top: 20px; background: #222; padding: 20px; border-radius: 10px; box-shadow: 0px 2px 8px rgba(0,0,0,0.1);">
                             <p style="font-size: 18px; font-weight: bold; color: #fff !important;">🛒 Your Items</p>
                             ${cartItems.map(item => `
@@ -302,10 +301,10 @@ app.post('/api/orders', async (req, res) => {
                                     </div>
                                 </div>
                             `).join('')}
-                            
+
                         <p style="color: #aaa !important; font-size: 14px; text-align: center; margin-top: 20px;">We will contact you shortly to confirm your order.</p>
                         <div style="text-align: center; margin-top: 20px;">
-                            <a href="https://elitere.ooguy.com" style="background: #007bff; color: #fff !important; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; display: inline-block; font-weight: bold;">
+                            <a href="http://localhost:3000" style="background: #007bff; color: #fff !important; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; display: inline-block; font-weight: bold;">
                                 🔗 Visit Elitère Store
                             </a>
                         </div>
@@ -315,8 +314,7 @@ app.post('/api/orders', async (req, res) => {
                     </div>
                 `
             };
-            
-			
+
             await transporter.sendMail(mailOptions);
 
             return res.status(200).json({
@@ -336,7 +334,6 @@ app.post('/api/orders', async (req, res) => {
         });
     }
 });
-
 
 app.post('/api/reports', async (req, res) => {
     const { firstName, lastName, email, phone1, phone2, description } = req.body;
@@ -399,48 +396,47 @@ app.post('/api/reports', async (req, res) => {
                 { upsert: true, new: true }
             );
 
-
             const mailOptions = {
                 from: `"Elitère Store" <${process.env.GMAIL_USER}>`,
                 to: email,
                 subject: 'Report Confirmation',
                 html: `
                 <div style="font-family: Arial, sans-serif; max-width: 650px; margin: auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; background: #000 !important; color: #fff !important; box-shadow: 0px 4px 15px rgba(0,0,0,0.1);">
-                    
+
 						<div style="text-align: center;">
-							<img src="https://elitere.ooguy.com/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
+							<img src="http://localhost:3000/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
 							<h2 style="color: #fff !important; font-size: 22px; font-weight: bold;">Report Confirmation</h2>
 						</div>
-            
+
                     <p style="color: #ddd !important; font-size: 16px; text-align: center;">
                         Hello <strong style="color: #fff !important;">${firstName}</strong>, <br>
                         We have received your report and will respond to you as soon as possible.
                     </p>
-            
+
                     <div style="background: #222; padding: 20px; border-radius: 10px; box-shadow: 0px 2px 8px rgba(0,0,0,0.1); margin-top: 15px;">
                         <p style="font-size: 18px; font-weight: bold; color: #fff !important;">📩 Report Details</p>
                         <p style="color: #ccc !important;"><strong>👤 Name:</strong> ${firstName} ${lastName}</p>
                         <p style="color: #ccc !important;"><strong>📞 Phone:</strong> ${phone1} ${phone2 ? ` / ${phone2}` : ""}</p>
                         <p style="color: #ccc !important;"><strong>📩 Report:</strong> ${description}</p>
                     </div>
-            
+
                     <p style="color: #bbb !important; font-size: 14px; text-align: center; margin-top: 20px;">
                         We will contact you shortly regarding your report. Thank you for your patience.
                     </p>
-            
+
                     <div style="text-align: center; margin-top: 20px;">
-                        <a href="https://elitere.ooguy.com" style="background: #007bff; color: #fff !important; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; display: inline-block; font-weight: bold;">
+                        <a href="http://localhost:3000" style="background: #007bff; color: #fff !important; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; display: inline-block; font-weight: bold;">
                             🔗 Visit Elitère Store
                         </a>
                     </div>
-                    
+
                     <p style="text-align: center; font-size: 12px; color: #888 !important; margin-top: 20px;">
                         © 2025 Elitère Support. All rights reserved.
                     </p>
                 </div>
                 `
             };
-            
+
             await transporter.sendMail(mailOptions);
 
             return res.status(200).json({
@@ -460,7 +456,6 @@ app.post('/api/reports', async (req, res) => {
     }
 });
 
-	
 app.post('/api/feedback', async (req, res) =>
 {
 	const
@@ -639,24 +634,23 @@ app.post('/api/refunds', async (req, res) => {
                 { upsert: true, new: true }
             );
 
-
             const mailOptions = {
                 from: `"Elitère Store" <${process.env.GMAIL_USER}>`,
                 to: email,
                 subject: 'Refund Request',
                 html: `
                     <div style="font-family: Arial, sans-serif; max-width: 650px; margin: auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; background: #000 !important; box-shadow: 0px 4px 15px rgba(0,0,0,0.1); color: #fff !important;">
-                        
+
 						<div style="text-align: center;">
-							<img src="https://elitere.ooguy.com/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
+							<img src="http://localhost:3000/logo.png" alt="Company Logo" style="max-width: 180px; margin-bottom: 15px;">
 							<h2 style="color: #fff !important; font-size: 22px; font-weight: bold;">Refund Confirmation</h2>
 						</div>
-            
+
                         <p style="color: #ddd !important; font-size: 16px; text-align: center;">
                             Hello <strong style="color: #fff !important;">${firstName}</strong>, we have received your refund request. <br> 
                             Our team will review it and respond as soon as possible. You will receive a follow-up email once your refund is processed.
                         </p>
-            
+
                         <div style="background: #222; padding: 20px; border-radius: 10px; box-shadow: 0px 2px 8px rgba(0,0,0,0.1); margin-top: 15px;">
                             <p style="font-size: 18px; font-weight: bold; color: #fff !important;">📩 Refund Details</p>
                             <p style="color: #fff !important;"><strong>First Name:</strong> ${firstName}</p>
@@ -667,20 +661,18 @@ app.post('/api/refunds', async (req, res) => {
                             <p style="color: #fff !important;"><strong>📦 Item you want to refund:</strong> ${item}</p>
                             <p style="color: #fff !important;"><strong>❓ Reason:</strong> ${reason}</p>
                         </div>
-            
+
                         <div style="margin-top: 20px; text-align: center;">
                             <p style="font-size: 14px; color: #ccc;">We appreciate your patience. If you have any further questions, feel free to contact us.</p>
-                            <a href="https://elitere.ooguy.com" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #000 !important; text-decoration: none; border-radius: 8px; font-size: 16px;">Visit Elitère Store</a>
+                            <a href="http://localhost:3000" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #000 !important; text-decoration: none; border-radius: 8px; font-size: 16px;">Visit Elitère Store</a>
                         </div>
 
-            
                         <div style="margin-top: 30px; font-size: 12px; color: #aaa; text-align: center;">
                             <p>© 2025 Elitère Store. All rights reserved.</p>
                         </div>
                     </div>
                 `
             };
-            
 
             await transporter.sendMail(mailOptions);
 
@@ -724,7 +716,6 @@ app.get('/:scriptName', (req, res) => {
     }
 });
 
-
 const IMAGE_FOLDER = path.join(__dirname, 'UI');
 
 app.get('/UI', (req, res) =>
@@ -746,8 +737,6 @@ app.get('/UI', (req, res) =>
 		res.json(images);
 	});
 });
-
-
 
 app.listen(PORT, () =>
 {

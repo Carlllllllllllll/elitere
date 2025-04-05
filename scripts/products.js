@@ -1,30 +1,19 @@
 const products = {
 	Hats: [
-	{
-		name: "Stylish Hat",
-		images: ["hat1.png", "hat2.jpg", "hat3.jpg"],
-		price: "500EGP",
-		stock: "In Stock",
-		sizes: ["S", "M", "L"],
-		colors: ["red", "blue", "green"],
-		description: "A stylish hat perfect for any occasion."
-	},
-	{
-		name: "Limited Edition Hat",
-		images: ["hat4.jpg", "hat5.jpg", "hat6.jpg"],
-		price: "1000EGP",
-		stock: "In Stock",
-		description: "Limited edition hat, currently unavailable."
-	},
-	{
-		name: "Classic Hat",
-		images: ["hat7.jpg", "hat8.jpg", "hat9.jpg"],
-		price: "28EGP",
-		stock: "In Stock",
-		sizes: ["M", "L"],
-		colors: ["black", "white"],
-		description: "A classic hat for any outfit."
-	}]
+		{
+            name: "Stylish Hat",
+            images: {
+                red: ["hat1.png", "hat2.png", "hat3.png"],
+                blue: ["blue_hat1.png", "blue_hat2.jpg", "blue_hat3.jpg"],
+                green: ["green_hat1.png", "green_hat2.jpg", "green_hat3.jpg"]
+            },
+            price: "500EGP",
+            stock: "In Stock",
+            sizes: ["S", "M", "L"],
+            colors: ["red", "blue", "green"],
+            description: "A stylish hat perfect for any occasion."
+        }
+	]
 };
 
 const shippingFees = {
@@ -134,7 +123,7 @@ document.querySelectorAll("#sidebar a").forEach((link) =>
 
 				const img = document.createElement("img");
 				img.classList.add("product-image");
-				img.src = product.images[0];
+				img.src = product.images[product.colors[0]][0];
 				img.addEventListener("click", (event) => {
 					event.stopPropagation(); 
 					openModal(product);
@@ -175,148 +164,200 @@ document.querySelectorAll("#sidebar a").forEach((link) =>
 
 const modalName = document.getElementById("modalName");
 
-const openModal = (product) =>
-{
-	closeAllModals();
-	modalImage.src = product.images[0];
-	modalName.textContent = product.name;
-	modalPrice.textContent = product.price;
-	modalStock.textContent = product.stock;
-	modalStock.style.color = product.stock === "Out of Stock" ? "red" : "green";
+let startX = 0;
+let endX = 0;
 
-	const sizeSelect = document.getElementById("sizeSelect");
-	sizeSelect.innerHTML = "";
-	product.sizes?.forEach(size =>
-	{
-		let option = document.createElement("option");
-		option.value = size;
-		option.textContent = size;
-		sizeSelect.appendChild(option);
-	});
+const handleTouchStart = (event) => {
+    startX = event.touches[0].clientX; // Get the starting X position
+};
 
-	const colorSelect = document.getElementById("colorSelect");
-	colorSelect.innerHTML = "";
-	product.colors?.forEach(color =>
-	{
-		let option = document.createElement("option");
-		option.value = color;
-		option.textContent = color;
-		colorSelect.appendChild(option);
-	});
+const handleTouchMove = (event) => {
+    endX = event.touches[0].clientX; // Get the current X position
+};
 
-	sizeSelect.value = product.sizes[0]; 
-    colorSelect.value = product.colors[0];
+const handleTouchEnd = () => {
+    if (startX > endX + 50) {
+        // Swiped left
+        nextButton.click(); // Trigger the next image
+    } else if (startX < endX - 50) {
+        // Swiped right
+        prevButton.click(); // Trigger the previous image
+    }
+};
 
+// Add mouse event listeners for desktop
+const handleMouseDown = (event) => {
+    startX = event.clientX; // Get the starting X position
+};
+
+const handleMouseMove = (event) => {
+    endX = event.clientX; // Get the current X position
+};
+
+const handleMouseUp = () => {
+    if (startX > endX + 50) {
+        // Swiped left
+        nextButton.click(); // Trigger the next image
+    } else if (startX < endX - 50) {
+        // Swiped right
+        prevButton.click(); // Trigger the previous image
+    }
+};
+
+// Attach touch event listeners to the modal image
+modalImage.addEventListener('touchstart', handleTouchStart);
+modalImage.addEventListener('touchmove', handleTouchMove);
+modalImage.addEventListener('touchend', handleTouchEnd);
+
+// Attach mouse event listeners to the modal image
+modalImage.addEventListener('mousedown', handleMouseDown);
+modalImage.addEventListener('mousemove', handleMouseMove);
+modalImage.addEventListener('mouseup', handleMouseUp);
+
+const openModal = (product) => {
+    closeAllModals();
+    
+    // Set initial values
+    modalName.textContent = product.name;
+    modalPrice.textContent = product.price;
+    modalStock.textContent = product.stock;
+    modalStock.style.color = product.stock === "Out of Stock" ? "red" : "green";
+
+    const sizeSelect = document.getElementById("sizeSelect");
+    sizeSelect.innerHTML = "";
+    product.sizes?.forEach(size => {
+        let option = document.createElement("option");
+        option.value = size;
+        option.textContent = size;
+        sizeSelect.appendChild(option);
+    });
+
+    const colorSelect = document.getElementById("colorSelect");
+    colorSelect.innerHTML = "";
+    product.colors?.forEach(color => {
+        let option = document.createElement("option");
+        option.value = color;
+        option.textContent = color;
+        colorSelect.appendChild(option);
+    });
+
+    // Set default color and initialize currentIndex
+    const defaultColor = product.colors[0];
+    colorSelect.value = defaultColor;
+    let currentIndex = 0;
+
+    // Function to update the displayed image
+    const updateImage = () => {
+        modalImage.src = product.images[colorSelect.value][currentIndex]; // Set the image based on the current color and index
+    };
+    updateImage(); // Initial image display
+
+    // Change image on color dropdown change
+    colorSelect.addEventListener("change", (event) => {
+        const selectedColor = event.target.value;
+        currentIndex = 0; // Reset index when color changes
+        updateImage(); // Update image to the first of the new color
+    });
+
+    // Add available colors section
+    modalColors.innerHTML = ""; // Clear existing content
+    if(product.colors?.length) {
+        const colorLabel = document.createElement("strong");
+        colorLabel.textContent = "Available Colors:";
+        modalColors.appendChild(colorLabel);
+        modalColors.appendChild(document.createElement("br"));
+
+        product.colors.forEach(color => {
+            let colorCircle = document.createElement("div");
+            colorCircle.classList.add("color-circle");
+            colorCircle.style.backgroundColor = color;
+
+            colorCircle.addEventListener("click", () => {
+                colorSelect.value = color; // Update the dropdown value
+                currentIndex = 0; // Reset index when color changes
+                updateImage(); // Update image to the first of the new color
+            });
+
+            modalColors.appendChild(colorCircle);
+        });
+    }
+
+    // Image navigation logic
+    const updateModalImage = () => {
+        const selectedColor = colorSelect.value;
+        modalImage.src = product.images[selectedColor][currentIndex];
+        document.querySelectorAll(".dot").forEach((dot, idx) => {
+            dot.classList.toggle("active", idx === currentIndex);
+        });
+    };
+
+    prevButton.onclick = () => {
+        const selectedColor = colorSelect.value;
+        const images = product.images[selectedColor];
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        updateModalImage();
+    };
+
+    nextButton.onclick = () => {
+        const selectedColor = colorSelect.value;
+        const images = product.images[selectedColor];
+        currentIndex = (currentIndex + 1) % images.length;
+        updateModalImage();
+    };
+
+    // Set up modal description
+    modalDescription.innerHTML = "";
+    if (product.stock === "In Stock") {
+        const descWrapper = document.createElement("div");
+        descWrapper.classList.add("description-wrapper");
+
+        const descLabel = document.createElement("strong");
+        descLabel.textContent = "Product Description";
+        descLabel.classList.add("desc-title");
+
+        const descText = document.createElement("span");
+        descText.textContent = product.description;
+        descText.classList.add("desc-text");
+
+        descWrapper.appendChild(descLabel);
+        descWrapper.appendChild(document.createElement("br"));
+        descWrapper.appendChild(descText);
+
+        modalDescription.appendChild(descWrapper);
+    }
+
+    // Set up sizes in modal
     modalSizes.innerHTML = "";
-    modalColors.innerHTML = "";
+    if (product.sizes?.length) {
+        const sizeLabel = document.createElement("strong");
+        sizeLabel.textContent = "Available Sizes:";
+        modalSizes.appendChild(sizeLabel);
+        modalSizes.appendChild(document.createElement("br"));
 
-	modal.style.display = "flex";
+        product.sizes.forEach(size => {
+            let sizeBox = document.createElement("div");
+            sizeBox.classList.add("size-box");
+            sizeBox.textContent = size;
 
-	let currentIndex = 0;
-	modalImage.src = product.images[currentIndex];
-	modalStock.textContent = product.stock;
-	modalStock.style.color = product.stock === "Out of Stock" ? "red" : "rgba(0, 255, 0, 0.7)";
-	modalDescription.innerHTML = "";
+            sizeBox.addEventListener("click", () => {
+                sizeSelect.value = size; 
+            });
 
-	if(product.stock === "In Stock")
-	{
-		const descWrapper = document.createElement("div");
-		descWrapper.classList.add("description-wrapper");
+            modalSizes.appendChild(sizeBox);
+        });
+    }
 
-		const descLabel = document.createElement("strong");
-		descLabel.textContent = "Product Description:";
-		descLabel.classList.add("desc-title");
+    imageDots.innerHTML = '';
 
-		const descText = document.createElement("span");
-		descText.textContent = product.description;
-		descText.classList.add("desc-text");
+    const images = product.images[defaultColor];
+    images.forEach((_, index) => {
+        let dot = document.createElement("span");
+        dot.classList.add("dot");
+        if (index === currentIndex) dot.classList.add("active");
+        imageDots.appendChild(dot);
+    });
 
-		descWrapper.appendChild(descLabel);
-		descWrapper.appendChild(document.createElement("br"));
-		descWrapper.appendChild(descText);
-
-		modalDescription.appendChild(descWrapper);
-	}
-
-	modalSizes.innerHTML = "";
-	modalColors.innerHTML = "";
-	imageDots.innerHTML = "";
-
-	if(product.stock === "In Stock")
-	{
-		if(product.sizes?.length)
-		{
-			const sizeLabel = document.createElement("strong");
-			sizeLabel.textContent = "Available Sizes:";
-			modalSizes.appendChild(sizeLabel);
-			modalSizes.appendChild(document.createElement("br"));
-
-			product.sizes.forEach(size =>
-			{
-				let sizeBox = document.createElement("div");
-				sizeBox.classList.add("size-box");
-				sizeBox.textContent = size;
-
-				sizeBox.addEventListener("click", () => {
-                    sizeSelect.value = size; 
-                });
-
-				modalSizes.appendChild(sizeBox);
-			});
-		}
-
-		if(product.colors?.length)
-		{
-			const colorLabel = document.createElement("strong");
-			colorLabel.textContent = "Available Colors:";
-			modalColors.appendChild(colorLabel);
-			modalColors.appendChild(document.createElement("br"));
-
-			product.colors.forEach(color =>
-			{
-				let colorCircle = document.createElement("div");
-				colorCircle.classList.add("color-circle");
-				colorCircle.style.backgroundColor = color;
-
-				 colorCircle.addEventListener("click", () => {
-                    colorSelect.value = color; 
-                });
-
-				modalColors.appendChild(colorCircle);
-			});
-		}
-	}
-
-	product.images.forEach((_, index) =>
-	{
-		let dot = document.createElement("span");
-		dot.classList.add("dot");
-		if(index === currentIndex) dot.classList.add("active");
-		imageDots.appendChild(dot);
-	});
-
-	const updateModalImage = () =>
-	{
-		modalImage.src = product.images[currentIndex];
-		document.querySelectorAll(".dot").forEach((dot, idx) =>
-		{
-			dot.classList.toggle("active", idx === currentIndex);
-		});
-	};
-
-	prevButton.onclick = () =>
-	{
-		currentIndex = (currentIndex - 1 + product.images.length) % product.images.length;
-		updateModalImage();
-	};
-
-	nextButton.onclick = () =>
-	{
-		currentIndex = (currentIndex + 1) % product.images.length;
-		updateModalImage();
-	};
-
-	modal.style.display = "flex";
+    modal.style.display = "flex";
 };
 
 closeModalButton.onclick = () => closeAllModals();
@@ -905,7 +946,7 @@ document.getElementById("city").addEventListener("change", function() {
 
     const totalPriceDiv = document.getElementById('total-price');
     totalPriceDiv.textContent = `Total Price: ${totalPrice.toFixed(2)}EGP (Shipping: ${shippingFee}EGP)`;
-	displayCartItemsInCheckoutModal();
+	displayCartItemsInCheckoutModal(); 
 });
 
 document.addEventListener("DOMContentLoaded", function() {

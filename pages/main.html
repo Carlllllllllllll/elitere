@@ -117,9 +117,9 @@
                            <div id="modalSizes" class="modal-sizes"></div>
                            <div id="modalColors" class="modal-colors"></div>
                            <div id="modalDescription" class="modal-description"></div>
-                           <label for="sizeSelect">Size:</label>
+                           <label for="sizeSelect">Size</label>
                            <select id="sizeSelect"></select>
-                           <label for="colorSelect">Color:</label>
+                           <label for="colorSelect">Color</label>
                            <select id="colorSelect"></select>
                            <label for="quantityInput">Quantity:</label>
                            <input type="number" id="quantityInput" min="1" max="5" value="1">
@@ -175,12 +175,13 @@
                            </select>
 
                            <div id="wallet-info" class="hidden">
-                            <p>To complete your order, please transfer the total amount to <a href="tel:01144771118">01144771118</a>. Once the payment is made, send a screenshot of the successful transfer to the same number via WhatsApp, along with your Order ID. Secure your order now, and we’ll handle the rest!</p>
-                           </div>
-
-                           <div id="instapay" class="hidden"> 
-                            <p>To complete your order, please transfer the total amount to <a href="https://www.instapay.eg/">instapay@instapay.com</a></a>. Once the payment is made, send a screenshot of the successful transfer to this this number <a href="tel:01144771118">01144771118</a>  via WhatsApp, along with your Order ID. Secure your order now, and we’ll handle the rest!</p>
+                            <p>After completing your order, we will contact you to guide you through the payment process and ensure everything goes smoothly. Get ready for a seamless experience—we’ve got you covered!</p>
                         </div>
+                        
+                        <div id="instapay" class="hidden">
+                            <p>Once your order is placed, our team will reach out to you with all the details you need to complete your payment. Expect premium service and hassle-free guidance every step of the way!</p>
+                        </div>
+                        
                         
 
                            <div id="cart-items"></div>
@@ -193,11 +194,12 @@
          <div id="orderModal" class="modal">
                   <div class="modal-content" id="orderModalContent"></div>
          </div>
-         <div class="welcome-container">
-                <div id="welcomeContainer">
-                    <h1 class="typing"></h1>
-                </div>
-       </div>
+
+         <div id="welcomeBackground" class="welcome-screen">
+            <div id="welcomeContainer">
+                <h1 class="typing"></h1>
+            </div>
+        </div>
 
          <div id="reportModal" class="modal hidden">
                   <div class="modal-content">
@@ -270,19 +272,27 @@
                 <strong>Your Privacy, Our Commitment.</strong>
             </p>
             <p>At <strong>ELITÈRE</strong>, we take privacy and customer satisfaction as seriously as we take performance and style. When you shop with us, your data stays safe, your experience stays premium, and your trust stays unshaken.</p>
-            
-            <h3>1. Clothing Brand Rules</h3>
+        
+            <h3>1. Basic Rules</h3>
             <ul>
-                <li><strong>Authenticity First:</strong> All products sold under ELITÈRE are 100% authentic and meet our high-quality standards.</li>
-                <li><strong>Exclusive Designs:</strong> Our collections are unique, and any imitation or resale without permission is strictly prohibited.</li>
-                <li><strong>Limited Drops:</strong> Many items are limited edition and will not be restocked once sold out.</li>
-                <li><strong>Care Instructions:</strong> Follow the recommended care guide for maximum longevity and performance.</li>
+                <li><strong>No Spamming:</strong> Do not send multiple messages or orders unnecessarily.</li>
+                <li><strong>Respectful Communication:</strong> Harassment or inappropriate behavior towards our team will not be tolerated.</li>
+                <li><strong>Payment Before Processing:</strong> Orders will only be processed once the payment is confirmed.</li>
+                <li><strong>No Order Cancellations:</strong> Once placed, orders cannot be canceled or changed.</li>
             </ul>
-            
-            <h3>2. Payment & Security – Secure & Seamless</h3>
-            <p>We keep it simple and flexible: Pay with <strong>Instapay</strong> or <strong>Mobile Wallet Transfer</strong>. No card details, no risks—just a smooth and secure experience. We <strong>DO NOT</strong> offer Cash on Delivery due to frequent scams.</p>
-            <p>If you choose Instapay or Mobile Wallet Transfer, send the total amount to <a href="https://www.instapay.eg/">instapay@instapay.com</a>  for PayPal transfer and <a href="tel:01144771118">01144771118</a> for Mobile Wallet Transfer, then share a screenshot of the successful payment on WhatsApp on this number <a href="tel:01144771118">01144771118</a> along with your Order ID. Need help? We've got you covered!</p>
-            
+        
+            <br>
+        
+            <h3>2. Payment & Security</h3>
+            <p>For a smooth and secure transaction, <strong>we do not offer Cash on Delivery (COD)</strong>. We accept:</p>
+            <ul>
+                <li>📲 <strong>Mobile Wallet Transfer</strong></li>
+                <li>💳 <strong>Instapay</strong></li>
+            </ul>
+            <p>We will guide you through the payment process to ensure everything is hassle-free.</p>
+        
+            <br>
+        
             <h3>3. Refund & Exchange Policy – Designed for Your Confidence</h3>
             <p>We’re committed to delivering quality and style. While all sales are final, we’re here to help if anything goes wrong:</p>
             <ul>
@@ -291,17 +301,19 @@
                 <li><strong>Need Assistance?</strong> If you believe a refund is necessary, submit a refund request, and our team will review your case to find the best solution for you.</li>
             </ul>
             <p>Just reach out to our support team—we’ve got your back!</p>
-            
+        
+            <br>
+        
             <h3>4. Your Data, Your Privacy – No Third Parties Allowed</h3>
             <p>We protect your data like it’s our own. Your information is used only for processing orders and providing top-tier customer service. We never share, sell, or rent your details—because trust is non-negotiable.</p>
-            
+        
+            <br>
+        
             <h3>5. Policy Updates – Keeping It Fresh</h3>
             <p>As we grow, so do our policies. If we make changes, we’ll update this section to keep you in the loop. Stay tuned.</p>
-            
-            <p><strong>Need Help? We’re Just a Message Away.</strong></p>
-            <p>Email: <a href="mailto:eliterebrand@gmail.com">eliterebrand@gmail.com</a></p>
-            <p>Phone: <a href="tel:01144771118">01144771118</a></p>
+
         </div>
+        
         
         <div id="shippingPolicySection" class="hidden">
             <h2>Shipping & Delivery</h2>
@@ -309,33 +321,40 @@
                 <strong>ELITÈRE – Fast, Reliable, and Exclusive Delivery.</strong>
             </p>
             <p> When you shop at <strong>ELITÈRE</strong>, you're not just ordering high-performance sportswear—you’re choosing speed, security, and a hassle-free experience. Our shipping policy ensures your order reaches you smoothly, so you can focus on what matters: looking and feeling elite. </p>
-            
+        
+            <br>
+        
             <h3>1. Where We Deliver</h3>
             <p>
                 <strong>ELITÈRE ships exclusively within Egypt.</strong> No international shipping—our focus is delivering top-tier service right where you need it.
             </p>
-            
+        
+            <br>
+        
             <h3>2. Delivery Time – Speed Meets Precision</h3>
             <p> Once your order is confirmed, we process and ship it within <strong>2 to 5 business days</strong>, depending on your location in Egypt. </p>
-            
-            <h3>3. Payment Options – Secure & Scam-Free</h3>  
-            <p><strong>We do not offer Cash on Delivery (COD)</strong> due to the high risk of scams. Our payments are secure, and your trust matters. Choose between <strong>Instapay</strong> or <strong>Mobile Wallet Transfer</strong> for a smooth transaction.</p>  
-            <p>To complete your payment:</p>
+        
+            <br>
+        
+            <h3>3. Payment Process</h3>
+            <p>Since we do not offer COD, please complete your payment via:</p>
             <ul>
-                <li><strong>📲 Mobile Wallet Transfer:</strong> Send the total amount to <a href="tel:01144771118">01144771118</a> and share a screenshot of the successful payment on WhatsApp along with your Order ID.</li>
-                <li><strong>💳 Instapay:</strong> Transfer the payment securely to <a href="https://www.instapay.eg/">instapay@instapay.com</a> and share a screenshot of the successful payment on WhatsApp on this number <a href="tel:01144771118">01144771118</a> along with your Order ID.</li>
+                <li>📲 <strong>Mobile Wallet Transfer</strong></li>
+                <li>💳 <strong>Instapay</strong></li>
             </ul>
-            
+        
+            <br>
+        
             <h3>4. What Happens If You Miss Your Delivery?</h3>
             <p> Our courier will contact you before arrival. If you're unavailable, don’t worry! We’ll schedule another attempt. If we can’t reach you after multiple tries, your order will be canceled. </p>
-            
+        
+            <br>
+        
             <h3>5. Policy Updates – Stay in the Know</h3>
             <p> We’re always working to enhance our services. If anything changes, we’ll update this section. Stay tuned for the latest shipping updates. </p>
             
-            <p><strong>Got Questions? We’ve Got Answers.</strong></p>
-            <p>Email: <a href="mailto:eliterebrand@gmail.com">eliterebrand@gmail.com</a></p>
-            <p>Phone: <a href="tel:01144771118">01144771118</a></p>
         </div>
+        
         
         
         

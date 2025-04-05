@@ -3,41 +3,58 @@ const typingElement = document.querySelector(".typing");
 let index = 0;
 
 function type() {
-	if (index < text.length) {
-		let char = text[index];
-		
-		let temp = typingElement.innerHTML + char;
-		typingElement.innerHTML = temp;
-		let containerWidth = typingElement.parentElement.clientWidth;
-		let textWidth = typingElement.scrollWidth;
-
-		if (textWidth > containerWidth) {
-			let words = temp.split(" ");
-			if (words.length > 1) {
-				words[words.length - 2] += "<br>"; 
-			}
-			typingElement.innerHTML = words.join(" ");
-		}
-
-		index++;
-		setTimeout(type, Math.random() * 150 + 50); 
-	} else {
-		typingElement.style.borderRight = "none"; 
-	}
+    if (index < text.length) {
+        typingElement.textContent += text[index];
+        index++;
+        setTimeout(type, 100);
+    }
 }
-
 type();
 
-const welcomeContainer = document.getElementById("welcomeContainer");
+function hideWelcomeScreen() {
+    const bg = document.getElementById("welcomeBackground");
+    const container = document.getElementById("welcomeContainer");
+    
+    if (bg && container) {
+        bg.style.opacity = "0";
+        container.style.opacity = "0";
+        
+        setTimeout(() => {
+            bg.style.display = "none";
+            container.style.display = "none";
+        }, 500);
+    }
+}
+
+
 document.querySelectorAll('[data-category]').forEach(item => {
-         item.addEventListener("click", () => {
-                  if (welcomeContainer) {
-                           welcomeContainer.style.opacity = "0"; 
-                           setTimeout(() => {
-                                    welcomeContainer.style.display = "none"; 
-                           }, 500); 
-                  } else {
-                           console.error("welcomeContainer not found!");
-                  }
-         });
-});   
+    item.addEventListener("click", hideWelcomeScreen);
+});
+
+
+const specialLinks = ["aboutUsLink", "privacypolicyLink", "shippingpolicyLink"];
+
+document.addEventListener("click", function(event) {
+    const target = event.target;
+    
+
+    const isSpecialLink = specialLinks.some(id => 
+        target.id === id || target.closest(`#${id}`)
+    );
+    
+    if (isSpecialLink) {
+        event.preventDefault();
+        hideWelcomeScreen();
+        
+        const sectionMap = {
+            aboutUsLink: "aboutUsSection",
+            privacypolicyLink: "privacyPolicySection",
+            shippingpolicyLink: "shippingPolicySection"
+        };
+        
+        const sectionId = sectionMap[target.id] || sectionMap[target.closest("a").id];
+        if (sectionId) {
+            document.getElementById(sectionId).style.display = "block";
+        }
+    }
+});
